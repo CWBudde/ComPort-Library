@@ -1,0 +1,184 @@
+# ---------------------------------------------------------------------------
+!if !$d(BCB)
+BCB = $(MAKEDIR)\..
+!endif
+
+# ---------------------------------------------------------------------------
+# IDE SECTION
+# ---------------------------------------------------------------------------
+# The following section of the project makefile is managed by the BCB IDE.
+# It is recommended to use the IDE to change any of the values in this
+# section.
+# ---------------------------------------------------------------------------
+
+VERSION = BCB.04.04
+# ---------------------------------------------------------------------------
+PROJECT = ComExampleCB4.exe
+OBJFILES = ComExampleCB4.obj ComMainForm.obj
+RESFILES = ComExampleCB4.res
+RESDEPEN = $(RESFILES) ComMainForm.dfm
+LIBFILES =
+LIBRARIES = CPORTLIBCB4.lib VCL40.lib
+SPARELIBS = VCL40.lib CPORTLIBCB4.lib
+DEFFILE =
+PACKAGES = VCL40.bpi CPORTLIBCB4.bpi
+# ---------------------------------------------------------------------------
+PATHCPP = .;
+PATHASM = .;
+PATHPAS = .;
+PATHRC = .;
+DEBUGLIBPATH = $(BCB)\lib\debug
+RELEASELIBPATH = $(BCB)\lib\release
+# ---------------------------------------------------------------------------
+CFLAG1 = -Od -Hc -w -Ve -k -y -v -vi- -c -b- -w-par -w-inl -Vx
+CFLAG2 = -I$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\cport -H=o\project.csm
+CFLAG3 = -Tkh30000
+PFLAGS = -U$(BCB)\cport;$(BCB)\projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\cport;$(RELEASELIBPATH) \
+  -I$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\cport -$Y -$W -$R \
+  -$Q -$O- -v -JPHN -M
+RFLAGS = -i$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\cport
+AFLAGS = /i$(BCB)\projects /i$(BCB)\include /i$(BCB)\include\vcl /i$(BCB)\cport /mx /w2 \
+  /zi /dUSEPACKAGES
+LFLAGS = -L$(BCB)\cport;$(BCB)\projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\cport;$(RELEASELIBPATH) \
+  -aa -Tpe -x -Gn -Gl -Gi -v
+IFLAGS =
+# ---------------------------------------------------------------------------
+ALLOBJ = c0w32.obj $(OBJFILES)
+ALLRES = $(RESFILES)
+ALLLIB = $(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib
+# ---------------------------------------------------------------------------
+!ifdef IDEOPTIONS
+
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=1
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1033
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=4
+Item0=$(BCB)\projects;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\cport
+Item1=c:\program files\borland\cbuilder3\projects;..\..\projects;..\..\objrepos;$(BCB)\include;$(BCB)\include\vcl;..\..\source\jcs
+Item2=..\..\projects;..\..\objrepos;$(BCB)\include;$(BCB)\include\vcl;..\..\source\jcs
+Item3=$(BCB)\include;$(BCB)\include\vcl;..\..\source\jcs
+
+[HistoryLists\hlLibraryPath]
+Count=4
+Item0=$(BCB)\cport;$(BCB)\projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\cport
+Item1=c:\program files\borland\cbuilder3\projects;..\..\projects;..\..\objrepos;$(BCB)\lib;$(BCB)\lib\obj;..\..\source\jcs
+Item2=..\..\projects;..\..\objrepos;$(BCB)\lib;$(BCB)\lib\obj;..\..\source\jcs
+Item3=$(BCB)\lib;$(BCB)\lib\obj;..\..\source\jcs
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=2
+Item0=USEPACKAGES
+Item1=_RTLDLL;USEPACKAGES
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+HostApplication=
+
+!endif
+
+# ---------------------------------------------------------------------------
+# MAKE SECTION
+# ---------------------------------------------------------------------------
+# This section of the project file is not used by the BCB IDE.  It is for
+# the benefit of building from the command-line using the MAKE utility.
+# ---------------------------------------------------------------------------
+
+.autodepend
+# ---------------------------------------------------------------------------
+!if !$d(BCC32)
+BCC32 = bcc32
+!endif
+
+!if !$d(DCC32)
+DCC32 = dcc32
+!endif
+
+!if !$d(TASM32)
+TASM32 = tasm32
+!endif
+
+!if !$d(LINKER)
+LINKER = ilink32
+!endif
+
+!if !$d(BRCC32)
+BRCC32 = brcc32
+!endif
+# ---------------------------------------------------------------------------
+!if $d(PATHCPP)
+.PATH.CPP = $(PATHCPP)
+.PATH.C   = $(PATHCPP)
+!endif
+
+!if $d(PATHPAS)
+.PATH.PAS = $(PATHPAS)
+!endif
+
+!if $d(PATHASM)
+.PATH.ASM = $(PATHASM)
+!endif
+
+!if $d(PATHRC)
+.PATH.RC  = $(PATHRC)
+!endif
+# ---------------------------------------------------------------------------
+$(PROJECT): $(OBJFILES) $(RESDEPEN) $(DEFFILE)
+    $(BCB)\BIN\$(LINKER) @&&!
+    $(LFLAGS) +
+    $(ALLOBJ), +
+    $(PROJECT),, +
+    $(ALLLIB), +
+    $(DEFFILE), +
+    $(ALLRES)
+!
+# ---------------------------------------------------------------------------
+.pas.hpp:
+    $(BCB)\BIN\$(DCC32) $(PFLAGS) {$< }
+
+.pas.obj:
+    $(BCB)\BIN\$(DCC32) $(PFLAGS) {$< }
+
+.cpp.obj:
+    $(BCB)\BIN\$(BCC32) $(CFLAG1) $(CFLAG2) $(CFLAG3) -n$(@D) {$< }
+
+.c.obj:
+    $(BCB)\BIN\$(BCC32) $(CFLAG1) $(CFLAG2) $(CFLAG3) -n$(@D) {$< }
+
+.asm.obj:
+    $(BCB)\BIN\$(TASM32) $(AFLAGS) $<, $@
+
+.rc.res:
+    $(BCB)\BIN\$(BRCC32) $(RFLAGS) -fo$@ $<
+# ---------------------------------------------------------------------------
