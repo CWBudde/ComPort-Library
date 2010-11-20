@@ -1,0 +1,325 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2003-05-19 20:47\n"
+"PO-Revision-Date: 2003-05-19 20:47\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: dxgettext 1.4\n"
+
+#. AboutBox..Caption
+#: CPortAbout.dfm:5
+msgid "About"
+msgstr ""
+
+#. AboutBox..Font.Name
+#: CPortAbout.dfm:12
+#. ComSetupFrm..Font.Name
+#: CPortSetup.dfm:12
+#. ComTrmSetForm..Font.Name
+#: CPortTrmSet.dfm:12
+msgid "MS Sans Serif"
+msgstr ""
+
+#. AboutBox..Panel1..ProductName..Caption
+#: CPortAbout.dfm:57
+msgid "ComPort Library"
+msgstr ""
+
+#. AboutBox..Panel1..ProductName..Font.Name
+#: CPortAbout.dfm:61
+msgid "MS Serif"
+msgstr ""
+
+#. AboutBox..Panel1..Version..Caption
+#: CPortAbout.dfm:71
+msgid "version"
+msgstr ""
+
+#. AboutBox..Panel1..Copyright..Caption
+#: CPortAbout.dfm:79
+msgid "by Dejan Crnila and others, 1998 - 2003"
+msgstr ""
+
+#. AboutBox..Panel1..Label1..Caption
+#: CPortAbout.dfm:87
+msgid "See http://comport.sf.net/ for more "
+"info"
+msgstr ""
+
+#. AboutBox..OKButton..Caption
+#: CPortAbout.dfm:95
+#. ComSetupFrm..Button1..Caption
+#: CPortSetup.dfm:24
+#. ComTrmSetForm..Button1..Caption
+#: CPortTrmSet.dfm:166
+msgid "OK"
+msgstr ""
+
+#. ComSetupFrm..Caption
+#: CPortSetup.dfm:5
+#. ComTrmSetForm..Caption
+#: CPortTrmSet.dfm:5
+msgid "Setup"
+msgstr ""
+
+#. ComSetupFrm..Button2..Caption
+#: CPortSetup.dfm:34
+#. ComTrmSetForm..Button2..Caption
+#: CPortTrmSet.dfm:176
+msgid "Cancel"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Caption
+#: CPortSetup.dfm:43
+msgid " Settings "
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Label1..Caption
+#: CPortSetup.dfm:50
+msgid "Port"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Label2..Caption
+#: CPortSetup.dfm:57
+msgid "Baud rate"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Label3..Caption
+#: CPortSetup.dfm:64
+msgid "Data bits"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Label4..Caption
+#: CPortSetup.dfm:71
+msgid "Stop bits"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Label5..Caption
+#: CPortSetup.dfm:78
+msgid "Parity"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Label6..Caption
+#: CPortSetup.dfm:85
+msgid "Flow control"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Combo2..Text
+#: CPortSetup.dfm:93
+msgid "Custom"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Combo5..Text
+#: CPortSetup.dfm:129
+#. ComTrmSetForm..GroupBox2..ComboBox2....Items.Strings
+#: CPortTrmSet.dfm:132
+msgid "None"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Combo6..Text
+#: CPortSetup.dfm:141
+msgid "Hardware"
+msgstr ""
+
+#. ComSetupFrm..GroupBox1..Combo1..Text
+#: CPortSetup.dfm:153
+msgid "COM1"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox1..Caption
+#: CPortTrmSet.dfm:24
+msgid " ASCII Settings "
+msgstr ""
+
+#. ComTrmSetForm..GroupBox1..CheckBox1..Caption
+#: CPortTrmSet.dfm:31
+msgid "Echo typed charachters locally"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox1..CheckBox2..Caption
+#: CPortTrmSet.dfm:39
+msgid "Send line feeds with carriage return"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox1..CheckBox3..Caption
+#: CPortTrmSet.dfm:47
+msgid "Wrap lines that exceed terminal width"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox1..CheckBox4..Caption
+#: CPortTrmSet.dfm:55
+msgid "Force incoming data to 7 bit ASCII"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox1..CheckBox5..Caption
+#: CPortTrmSet.dfm:63
+msgid "Append line feeds to incoming carriage "
+"return"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..Caption
+#: CPortTrmSet.dfm:72
+msgid " Terminal Settings "
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..Label1..Caption
+#: CPortTrmSet.dfm:79
+msgid "Caret"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..Label3..Caption
+#: CPortTrmSet.dfm:86
+msgid "Columns"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..Label4..Caption
+#: CPortTrmSet.dfm:93
+msgid "Rows"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..Label2..Caption
+#: CPortTrmSet.dfm:100
+msgid "Emulation"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..Label5..Caption
+#: CPortTrmSet.dfm:107
+msgid "Cursor keys"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..ComboBox1....Items.Strings
+#: CPortTrmSet.dfm:118
+msgid "Block"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..ComboBox1....Items.Strings
+#: CPortTrmSet.dfm:119
+msgid "Underline"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..ComboBox2....Items.Strings
+#: CPortTrmSet.dfm:130
+msgid "ANSI/VT100"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..ComboBox2....Items.Strings
+#: CPortTrmSet.dfm:131
+msgid "VT52"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..ComboBox3....Items.Strings
+#: CPortTrmSet.dfm:143
+msgid "Act as terminal keys"
+msgstr ""
+
+#. ComTrmSetForm..GroupBox2..ComboBox3....Items.Strings
+#: CPortTrmSet.dfm:144
+msgid "Act as windows keys"
+msgstr ""
+
+#. create exception with windows error code
+#: CPort.pas:3217
+msgid " (win error code: %d)"
+msgstr ""
+
+#: CPort.pas:3455
+msgid "Unable to open com port"
+msgstr ""
+
+#: CPort.pas:3456
+msgid "WriteFile function failed"
+msgstr ""
+
+#: CPort.pas:3457
+msgid "ReadFile function failed"
+msgstr ""
+
+#: CPort.pas:3458
+msgid "Invalid Async parameter"
+msgstr ""
+
+#: CPort.pas:3459
+msgid "PurgeComm function failed"
+msgstr ""
+
+#: CPort.pas:3460
+msgid "Unable to get async status"
+msgstr ""
+
+#: CPort.pas:3461
+msgid "SetCommState function failed"
+msgstr ""
+
+#: CPort.pas:3462
+msgid "SetCommTimeouts failed"
+msgstr ""
+
+#: CPort.pas:3463
+msgid "SetupComm function failed"
+msgstr ""
+
+#: CPort.pas:3464
+msgid "ClearCommError function failed"
+msgstr ""
+
+#: CPort.pas:3465
+msgid "GetCommModemStatus function failed"
+msgstr ""
+
+#: CPort.pas:3466
+msgid "EscapeCommFunction function failed"
+msgstr ""
+
+#: CPort.pas:3467
+msgid "TransmitCommChar function failed"
+msgstr ""
+
+#: CPort.pas:3468
+msgid "Cannot set property while connected"
+msgstr ""
+
+#: CPort.pas:3469
+msgid "EnumPorts function failed"
+msgstr ""
+
+#: CPort.pas:3470
+msgid "Failed to store settings"
+msgstr ""
+
+#: CPort.pas:3471
+msgid "Failed to load settings"
+msgstr ""
+
+#: CPort.pas:3472
+msgid "Link (un)registration failed"
+msgstr ""
+
+#: CPort.pas:3473
+msgid "Cannot change led state if ComPort is "
+"selected"
+msgstr ""
+
+#: CPort.pas:3474
+msgid "Cannot wait for event if event thread is "
+"created"
+msgstr ""
+
+#: CPort.pas:3475
+msgid "WaitForEvent method failed"
+msgstr ""
+
+#: CPort.pas:3476
+msgid "A component is linked to OnRxBuf event"
+msgstr ""
+
+#: CPort.pas:3477
+msgid "Registry error"
+msgstr ""
+

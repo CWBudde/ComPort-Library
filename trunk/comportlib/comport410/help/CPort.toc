@@ -1,0 +1,36 @@
+:Base CPort.hlp>Main
+:Title ComPort Library help
+1 ComPort Library
+2 Introduction
+3 About ComPort Library=hlp_About
+3 What's new in version 2.63=hlp_WhatsNew
+2 Programming with ComPort Library
+3 Using TComPort component
+4 Enumerating ports=hlp_Enumerate
+4 Opening and closing port=hlp_OpenClose
+4 Asynchronous and synchronous operations=hlp_AsyncSync
+4 Writing to port=hlp_Writing
+4 Reading from port=hlp_Reading
+4 Aborting asynchronous operation=hlp_Aborting
+4 Changing properties at runtime=hlp_ChangeProps
+4 Storing and loading settings=hlp_Storing
+4 Using buffer functions=hlp_BufferFuncs
+4 Detecting signals and port state=hlp_Detect
+4 Changing ouput flow control signals=hlp_ChangeSignals
+4 Retrieving error information=hlp_ErrorInfo
+4 Waiting for events=hlp_WaitingForEvents
+3 Reading data in packets
+4 About packets=hlp_AboutPackets
+4 Start and Stop conditions=hlp_PacketStartStop
+4 Forming custom packet=hlp_CustomPacket
+2 ComPort Library reference
+3 TComPort component=hlp_TComPort
+3 TComTerminal control=hlp_TComTerminal
+3 TComDataPacket component=hlp_TComDataPacket
+3 TComComboBox control=hlp_TComComboBox
+3 TComRadioGroup control=hlp_TComRadioGroup
+3 TComLed control=hlp_TComLed
+3 TComStream class=hlp_TComStream
+3 EComPort exception=hlp_EComPort
+3 Other procedures, types and constants=hlp_Other
+3 Error codes=hlp_ErrorCodes
