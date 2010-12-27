@@ -22,6 +22,22 @@ uses
   Windows, Messages, Classes, SysUtils, IniFiles, Registry;
 
 type
+  TComExceptions = ( CE_OpenFailed      ,    CE_WriteFailed     ,
+                        CE_ReadFailed      ,    CE_InvalidAsync    ,
+                        CE_PurgeFailed     ,    CE_AsyncCheck      ,
+                        CE_SetStateFailed  ,    CE_TimeoutsFailed  ,
+                        CE_SetupComFailed  ,    CE_ClearComFailed  ,
+                        CE_ModemStatFailed ,    CE_EscapeComFailed ,
+                        CE_TransmitFailed  ,    CE_ConnChangeProp  ,
+                        CE_EnumPortsFailed ,    CE_StoreFailed     ,
+                        CE_LoadFailed      ,    CE_RegFailed       ,
+                        CE_LedStateFailed  ,    CE_ThreadCreated   ,
+                        CE_WaitFailed      ,    CE_HasLink         ,
+                        CE_RegError        ,    CEPortNotOpen     );
+
+
+
+
   // various types
   TPort = string;
   TBaudRate = (brCustom, br110, br300, br600, br1200, br2400, br4800, br9600, br14400,
@@ -47,6 +63,9 @@ type
   TRxBufEvent = procedure(Sender: TObject; const Buffer; Count: Integer) of object;
   TComErrorEvent = procedure(Sender: TObject; Errors: TComErrors) of object;
   TComSignalEvent = procedure(Sender: TObject; OnOff: Boolean) of object;
+  TComExceptionEvent = procedure(Sender:TObject;
+                          TComException:TComExceptions; ComportMessage:String;
+                          WinError:Int64; WinMessage:String) of object;
 
   // types for asynchronous calls
   TOperationKind = (okWrite, okRead);
@@ -61,7 +80,6 @@ type
   {$IFNDEF Unicode}
   UnicodeString = Widestring;
   {$ENDIF}
-
 
   // TComPort component and asistant classes
   TCustomComPort = class; // forward declaration
@@ -275,6 +293,7 @@ type
     FOnBeforeOpen: TNotifyEvent;
     FOnBeforeClose: TNotifyEvent;
     FOnRx80Full : TNotifyEvent;
+    FOnException :TComExceptionEvent;
     FCodePage   : Cardinal;
     function GetTriggersOnRxChar: Boolean;
     procedure SetTriggersOnRxChar(const Value: Boolean);
@@ -312,6 +331,7 @@ type
     procedure CallError;
     procedure CallRLSDChange;
     procedure CallRx80Full;
+    procedure CallException(AnException: Word; const WinError: Int64 =0);
   protected
     procedure Loaded; override;
     procedure DoAfterClose; dynamic;
@@ -411,6 +431,7 @@ type
     property OnRxFlag: TNotifyEvent read FOnRxFlag write FOnRxFlag;
     property OnError: TComErrorEvent read FOnError write FOnError;
     property OnRx80Full: TNotifyEvent read FOnRx80Full write FOnRx80Full;
+    property OnException: TComExceptionEvent read FOnException write FOnException;
     // Translate strings between ANSI charsets
     property CodePage: Cardinal read FCodePage write FCodePage default 0;
   end;
@@ -445,6 +466,7 @@ type
     property OnRxFlag;
     property OnError;
     property OnRx80Full;
+    property OnException;
     property CodePage;
   end;
 
@@ -1280,6 +1302,21 @@ begin
   FLinks.Free;
 end;
 
+//Handle Exceptions
+procedure  TCustomComPort.CallException(AnException:Word; const WinError:Int64 =0);
+var winmessage:string;
+begin
+  if Assigned(FOnException) then
+  begin
+    if WinError > 0 then //get windows error string
+    try  Win32Check(winerror = 0);  except on E:Exception do WinMessage:=e.message; end;
+    FOnException(self,TComExceptions(AnException),ComErrorMessages[AnException],WinError, WinMessage);
+  end
+    else
+      if WinError > 0 then raise EComPort.Create(AnException, WinError)
+       else raise EComPort.CreateNoWinCode(AnException);
+
+end;
 // create handle to serial port
 procedure TCustomComPort.CreateHandle;
 begin
@@ -1293,7 +1330,8 @@ begin
     0);
 
   if FHandle = INVALID_HANDLE_VALUE then
-    raise EComPort.Create(CError_OpenFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_OpenFailed, GetLastError);
 end;
 
 // destroy serial port handle
@@ -1516,7 +1554,8 @@ begin
 
     // apply settings
     if not SetCommState(FHandle, DCB) then
-      raise EComPort.Create(CError_SetStateFailed, GetLastError);
+      //raise EComPort.Create
+      CallException(CError_SetStateFailed, GetLastError);
   end;
 end;
 
@@ -1546,7 +1585,8 @@ begin
 
     // apply settings
     if not SetCommTimeouts(FHandle, Timeouts) then
-      raise EComPort.Create(CError_TimeoutsFailed, GetLastError);
+      //raise EComPort.Create
+      CallException(CError_TimeoutsFailed, GetLastError);
   end;
 end;
 
@@ -1559,7 +1599,8 @@ begin
   then
     //apply settings
     if not SetupComm(FHandle, FBuffer.InputSize, FBuffer.OutputSize) then
-      raise EComPort.Create(CError_SetupComFailed, GetLastError);
+      //raise EComPort.Create
+      CallException(CError_SetupComFailed, GetLastError);
 end;
 
 // initialize port
@@ -1577,7 +1618,8 @@ var
   ComStat: TComStat;
 begin
   if not ClearCommError(FHandle, Errors, @ComStat) then
-    raise EComPort.Create(CError_ClearComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_ClearComFailed, GetLastError);
   Result := ComStat.cbInQue;
 end;
 
@@ -1588,7 +1630,8 @@ var
   ComStat: TComStat;
 begin
   if not ClearCommError(FHandle, Errors, @ComStat) then
-    raise EComPort.Create(CError_ClearComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_ClearComFailed, GetLastError);
   Result := ComStat.cbOutQue;
 end;
 
@@ -1598,7 +1641,8 @@ var
   Status: DWORD;
 begin
   if not GetCommModemStatus(FHandle, Status) then
-    raise EComPort.Create(CError_ModemStatFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_ModemStatFailed, GetLastError);
   Result := [];
 
   if (MS_CTS_ON and Status) <> 0 then
@@ -1618,7 +1662,8 @@ var
   ComStat: TComStat;
 begin
   if not ClearCommError(FHandle, Errors, @ComStat) then
-    raise EComPort.Create(CError_ClearComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_ClearComFailed, GetLastError);
   Result := ComStat.Flags;
 end;
 
@@ -1633,7 +1678,8 @@ begin
     Act := Windows.CLRBREAK;
 
   if not EscapeCommFunction(FHandle, Act) then
-    raise EComPort.Create(CError_EscapeComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_EscapeComFailed, GetLastError);
 end;
 
 // set DTR signal
@@ -1647,7 +1693,8 @@ begin
     Act := Windows.CLRDTR;
 
   if not EscapeCommFunction(FHandle, Act) then
-    raise EComPort.Create(CError_EscapeComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_EscapeComFailed, GetLastError);
 end;
 
 // set RTS signals
@@ -1661,7 +1708,8 @@ begin
     Act := Windows.CLRRTS;
 
   if not EscapeCommFunction(FHandle, Act) then
-    raise EComPort.Create(CError_EscapeComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_EscapeComFailed, GetLastError);
 end;
 
 // set XonXoff state
@@ -1675,7 +1723,8 @@ begin
     Act := Windows.SETXOFF;
 
   if not EscapeCommFunction(FHandle, Act) then
-    raise EComPort.Create(CError_EscapeComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_EscapeComFailed, GetLastError);
 end;
 
 // clear input and/or output buffer
@@ -1690,7 +1739,8 @@ begin
     Flag := Flag or PURGE_TXCLEAR;
 
   if not PurgeComm(FHandle, Flag) then
-    raise EComPort.Create(CError_PurgeFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_PurgeFailed, GetLastError);
 end;
 
 // return last errors on port
@@ -1700,7 +1750,8 @@ var
   ComStat: TComStat;
 begin
   if not ClearCommError(FHandle, Errors, @ComStat) then
-    raise EComPort.Create(CError_ClearComFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_ClearComFailed, GetLastError);
   Result := [];
 
   if (CE_FRAME and Errors) <> 0 then
@@ -1742,16 +1793,19 @@ var
   BytesTrans: DWORD;
 begin
   if AsyncPtr = nil then
-    raise EComPort.CreateNoWinCode(CError_InvalidAsync);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_InvalidAsync);
   if FHandle = INVALID_HANDLE_VALUE then
-    raise EComPort.Create(CError_PortNotOpen, -24);
+    //raise EComPort.Create
+    CallException(CError_PortNotOpen, -24);
   PrepareAsync(okWrite, Buffer, Count, AsyncPtr);
 
   Success := WriteFile(FHandle, Buffer, Count, BytesTrans, @AsyncPtr^.Overlapped)
     or (GetLastError = ERROR_IO_PENDING);
 
   if not Success then
-    raise EComPort.Create(CError_WriteFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_WriteFailed, GetLastError);
 
   SendSignalToLink(leTx, True);
   Result := BytesTrans;
@@ -1830,16 +1884,19 @@ var
   BytesTrans: DWORD;
 begin
   if AsyncPtr = nil then
-    raise EComPort.CreateNoWinCode(CError_InvalidAsync);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_InvalidAsync);
   AsyncPtr^.Kind := okRead;
   if FHandle = INVALID_HANDLE_VALUE then
-    raise EComPort.Create(CError_PortNotOpen, -24);
+    //raise EComPort.Create
+    CallException(CError_PortNotOpen, -24);
 
   Success := ReadFile(FHandle, Buffer, Count, BytesTrans, @AsyncPtr^.Overlapped)
     or (GetLastError = ERROR_IO_PENDING);
 
   if not Success then
-    raise EComPort.Create(CError_ReadFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_ReadFailed, GetLastError);
 
   Result := BytesTrans;
 end;
@@ -1904,14 +1961,16 @@ var
   Success: Boolean;
 begin
   if AsyncPtr = nil then
-    raise EComPort.CreateNoWinCode(CError_InvalidAsync);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_InvalidAsync);
 
   Signaled := WaitForSingleObject(AsyncPtr^.Overlapped.hEvent, INFINITE);
   Success := (Signaled = WAIT_OBJECT_0) and
       (GetOverlappedResult(FHandle, AsyncPtr^.Overlapped, BytesTrans, False));
 
   if not Success then
-    raise EComPort.Create(ErrorCode(AsyncPtr), GetLastError);
+    //raise EComPort.Create
+    CallException(ErrorCode(AsyncPtr), GetLastError);
 
   if (AsyncPtr^.Kind = okRead) and (InputCount = 0) then
     SendSignalToLink(leRx, False)
@@ -1926,7 +1985,8 @@ end;
 procedure TCustomComPort.AbortAllAsync;
 begin
   if not PurgeComm(FHandle, PURGE_TXABORT or PURGE_RXABORT) then
-    raise EComPort.Create(CError_PurgeFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_PurgeFailed, GetLastError);
 end;
 
 // detect whether asynchronous operation is completed
@@ -1935,12 +1995,14 @@ var
   BytesTrans: DWORD;
 begin
   if AsyncPtr = nil then
-    raise EComPort.CreateNoWinCode(CError_InvalidAsync);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_InvalidAsync);
 
   Result := GetOverlappedResult(FHandle, AsyncPtr^.Overlapped, BytesTrans, False);
   if not Result then
     if (GetLastError <> ERROR_IO_PENDING) and (GetLastError <> ERROR_IO_INCOMPLETE) then
-      raise EComPort.Create(CError_AsyncCheck, GetLastError);
+      //raise EComPort.Create
+      CallException(CError_AsyncCheck, GetLastError);
 end;
 
 // waits for event to occur on serial port
@@ -1955,7 +2017,8 @@ var
 begin
   // cannot call method if event thread is running
   if FThreadCreated then
-    raise EComPort.CreateNoWinCode(CError_ThreadCreated);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_ThreadCreated);
 
   FillChar(Overlapped, SizeOf(TOverlapped), 0);
   Overlapped.hEvent := CreateEvent(nil, True, False, nil);
@@ -1983,7 +2046,8 @@ begin
     end;
 
     if not Success then
-      raise EComPort.Create(CError_WaitFailed, GetLastError);
+      //raise EComPort.Create
+      CallException(CError_WaitFailed, GetLastError);
 
     Events := IntToEvents(Mask);
   finally
@@ -1995,7 +2059,8 @@ end;
 procedure TCustomComPort.TransmitChar(Ch: Char);
 begin
   if not TransmitCommChar(FHandle, AnsiChar(Ch)) then
-    raise EComPort.Create(CError_TransmitFailed, GetLastError);
+    //raise EComPort.Create
+    CallException(CError_TransmitFailed, GetLastError);
 end;
 
 // show port setup dialog
@@ -2368,7 +2433,8 @@ begin
       end
     end;
   except
-    raise EComPort.CreateNoWinCode(CError_StoreFailed);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_StoreFailed);
   end;
 end;
 
@@ -2403,7 +2469,8 @@ begin
       EndUpdate;
     end;
   except
-    raise EComPort.CreateNoWinCode(CError_LoadFailed);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_LoadFailed);
   end;
 end;
 
@@ -2411,7 +2478,8 @@ end;
 procedure TCustomComPort.RegisterLink(AComLink: TComLink);
 begin
   if FLinks.IndexOf(Pointer(AComLink)) > -1 then
-    raise EComPort.CreateNoWinCode(CError_RegFailed)
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_RegFailed)
   else
     FLinks.Add(Pointer(AComLink));
   FHasLink := HasLink;
@@ -2421,7 +2489,8 @@ end;
 procedure TCustomComPort.UnRegisterLink(AComLink: TComLink);
 begin
   if FLinks.IndexOf(Pointer(AComLink)) = -1 then
-    raise EComPort.CreateNoWinCode(CError_RegFailed)
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_RegFailed)
   else
     FLinks.Remove(Pointer(AComLink));
   FHasLink := HasLink;
@@ -2886,7 +2955,8 @@ begin
     if FConnected and not ((csDesigning in ComponentState) or
       (csLoading in ComponentState))
     then
-      raise EComPort.CreateNoWinCode(CError_ConnChangeProp)
+      //raise EComPort.CreateNoWinCode
+      CallException(CError_ConnChangeProp)
     else
       FSyncMethod := Value;
   end;
@@ -2896,7 +2966,8 @@ end;
 procedure TCustomComPort.SetTriggersOnRxChar(const Value: Boolean);
 begin
   if FHasLink then
-    raise EComPort.CreateNoWinCode(CError_HasLink);
+    //raise EComPort.CreateNoWinCode
+    CallException(CError_HasLink);
   FTriggersOnRxChar := Value;
 end;
 
@@ -2908,7 +2979,8 @@ begin
     if FConnected and not ((csDesigning in ComponentState) or
       (csLoading in ComponentState))
     then
-      raise EComPort.CreateNoWinCode(CError_ConnChangeProp)
+      //raise EComPort.CreateNoWinCode
+      CallException(CError_ConnChangeProp)
     else
       FEventThreadPriority := Value;
   end;
@@ -3346,8 +3418,11 @@ begin
     KEY_READ,
     KeyHandle);
 
-  if ErrCode <> ERROR_SUCCESS then exit;
+  if ErrCode <> ERROR_SUCCESS then
+  begin
     //raise EComPort.Create(CError_RegError, ErrCode);
+    exit;
+  end;
 
   TmpPorts := TStringList.Create;
   try
