@@ -450,6 +450,8 @@ type
     property Buffer;
     property FlowControl;
     property Timeouts;
+    property StoredProps;
+    property TriggersOnRxChar;
     property SyncMethod;
     property OnAfterOpen;
     property OnAfterClose;
