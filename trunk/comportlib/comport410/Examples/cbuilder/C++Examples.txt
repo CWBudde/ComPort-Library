@@ -1,0 +1,16 @@
+These are the exact same examples as Dejan's Delphi
+examples.  The .DFM files are in fact the same files.
+Since C++ Builder does not always upgrade projects well,
+so I enclosed separate projects for C++ Builder 3, 4
+and 5.
+
+The examples projects are built with the assumption
+that the CPORT library was installed in a directory
+called CPORT under the CBuilder main directory.  For
+example, for a normal C++ Builder 3 installation,
+CPORT would be installed in:
+
+C:\Program Files\Borland\CBuilder3\CPORT.
+
+If you did not install in this directory, you may need 
+to modify the search path for the project.
