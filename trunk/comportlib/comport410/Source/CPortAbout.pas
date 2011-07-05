@@ -37,7 +37,7 @@ type
 procedure ShowAbout;
 
 const
-  CPortLibraryVersion = '3.0';
+  CPortLibraryVersion = '4.11';
 
 implementation
 
