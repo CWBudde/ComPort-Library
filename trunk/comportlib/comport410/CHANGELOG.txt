@@ -1,5 +1,13 @@
 Version history
 ---------------
+4.11 July 2011 
+  Fixed version constant
+
+4.1 Jan 2011
+  Delphi XE support
+  Fixed C++Builder support.
+
+4.0 Various upgrades and unit refactorings
 
 3.1  December 24, 2005
   by Paul Doland:
