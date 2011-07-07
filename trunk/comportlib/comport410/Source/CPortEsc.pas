@@ -429,7 +429,11 @@ var
 begin
   Result := ecNotCompleted;
   LastCh := Str[Length(Str)];
+  {$ifdef UNICODE}
+  if not SysUtils.CharInSet(LastCh,['A'..'Z', 'a'..'z']) then
+  {$else}
   if not (LastCh in ['A'..'Z', 'a'..'z']) then
+  {$endif}
     Exit;
   TempParams := TStringList.Create;
   try
