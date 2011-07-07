@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{A2E07DA9-A150-4C05-A26F-8E6B8C58420E}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="..\Source\CPortLibCBXE.cbproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="..\Source\DsgnCPortCBXE.cbproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="CPortLibCBXE">
+			<MSBuild Projects="..\Source\CPortLibCBXE.cbproj"/>
+		</Target>
+		<Target Name="CPortLibCBXE:Clean">
+			<MSBuild Projects="..\Source\CPortLibCBXE.cbproj" Targets="Clean"/>
+		</Target>
+		<Target Name="CPortLibCBXE:Make">
+			<MSBuild Projects="..\Source\CPortLibCBXE.cbproj" Targets="Make"/>
+		</Target>
+		<Target Name="DsgnCPortCBXE">
+			<MSBuild Projects="..\Source\DsgnCPortCBXE.cbproj"/>
+		</Target>
+		<Target Name="DsgnCPortCBXE:Clean">
+			<MSBuild Projects="..\Source\DsgnCPortCBXE.cbproj" Targets="Clean"/>
+		</Target>
+		<Target Name="DsgnCPortCBXE:Make">
+			<MSBuild Projects="..\Source\DsgnCPortCBXE.cbproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="CPortLibCBXE;DsgnCPortCBXE"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="CPortLibCBXE:Clean;DsgnCPortCBXE:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="CPortLibCBXE:Make;DsgnCPortCBXE:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>
