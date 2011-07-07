@@ -15,7 +15,7 @@ uses
   Classes;
 
 type
-  // terminal charachter result
+  // terminal character result
   TEscapeResult = (erChar, erCode, erNothing);
   // terminal escape codes
   TEscapeCode = (ecUnknown, ecNotCompleted, ecCursorUp, ecCursorDown,
@@ -32,7 +32,7 @@ type
   // terminal escape codes processor
   TEscapeCodes = class
   private
-    FCharachter: Char;
+    Fcharacter: Char;
     FCode: TEscapeCode;
     FData: string;
     FParams: TStrings;
@@ -44,7 +44,7 @@ type
     function GetParam(Num: Integer; AParams: TStrings): Integer;
     property Data: string read FData;
     property Code: TEscapeCode read FCode;
-    property Charachter: Char read FCharachter;
+    property character: Char read Fcharacter;
     property Params: TStrings read FParams;
   end;
 
@@ -107,7 +107,7 @@ end;
  * TEscapeCodesVT52 class                *
  *****************************************)
 
-// process charachter
+// process character
 function TEscapeCodesVT52.ProcessChar(Ch: Char): TEscapeResult;
 var
   TempCode: TEscapeCode;
@@ -121,7 +121,7 @@ begin
       FInSequence := True;
     end
     else begin
-      FCharachter := Ch;
+      Fcharacter := Ch;
       Result := erChar;
     end;
   end else
@@ -196,7 +196,7 @@ end;
  * TEscapeCodesVT100class                *
  *****************************************)
 
-// process charachter
+// process character
 function TEscapeCodesVT100.ProcessChar(Ch: Char): TEscapeResult;
 var
   TempCode: TEscapeCode;
@@ -210,7 +210,7 @@ begin
       FInSequence := True;
     end
     else begin
-      FCharachter := Ch;
+      Fcharacter := Ch;
       Result := erChar;
     end;
   end else
@@ -220,7 +220,7 @@ begin
     if FInExtSequence then
       TempCode := DetectExtCode(FData)
     else
-      // charachter [ after ESC defines extended escape code
+      // character [ after ESC defines extended escape code
       if FData[1] = '[' then
         FInExtSequence := True
       else
