@@ -1,11 +1,11 @@
 +-------------------------------------------------+
 | ComPort Library version 4.10                    |
-| for Delphi 3, 4, 5, 6, 7, 2005, 2006,XE         |
+| for Delphi 5, 6, 7, 2005, 2006, 2007, 2010, XE  |
 | and C++ Builder 3, 4, 5, 6                      |
 |                                                 |
 | by Dejan Crnila 1998-2002                       |
 | maintained by Lars Dybdahl and Paul Doland      |
-| maintained by Brian Gochnauer Nov 2010land      |
+| maintained by Brian Gochnauer Nov 2010          |
 +-------------------------------------------------+
 
 Contents
@@ -125,6 +125,7 @@ Otherwise, follow the directions below, and also read the C++ Builder
 notes:
 
 For Delphi 3, 4, 5, 6, 7, 2005 & C++ Builder 4, 5, 6:
+Delphi version earlier than version 5 have not been tested recently.
 (C++ Builder users also need to read the C++ Builder notes)
 
 Use "File/Open" menu item in Delphi/C++ Builder IDE to open 
