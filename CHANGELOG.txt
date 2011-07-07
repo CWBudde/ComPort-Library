@@ -2,6 +2,7 @@ Version history
 ---------------
 4.11 July 2011 
   Fixed version constant
+  Fixed spelling in property
 
 4.1 Jan 2011
   Delphi XE support
