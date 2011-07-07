@@ -1194,7 +1194,7 @@ end;
 procedure TComLed.SetState(const Value: TLedState);
 begin
   if FComPort <> nil then
-    raise EComPort.CreateNoWinCode(CError_LedStateFailed);
+    raise EComPort.Create(CError_LedStateFailed,-1,-1);
   SetStateInternal(Value);
 end;
 
@@ -2574,7 +2574,7 @@ begin
   Move(Buffer, Sa[1], Count);
   SetLength(Str, Count);
 //  Move(Buffer, Str[1], Count);
-  Str := AnsiString(sa);
+  Str := String(sa);
   if FAppendLF then
     AppendLineFeeds;
   if FForce7Bit then
