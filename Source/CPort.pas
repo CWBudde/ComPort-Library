@@ -547,8 +547,8 @@ type
     FWinCode: Integer;
     FCode: Integer;
   public
-    constructor Create(ACode: Integer; AWinCode: Integer);
-    constructor CreateNoWinCode(ACode: Integer);
+    constructor Create(ACode: Integer; AWinCode,AFuture: Integer);  // AFuture is a C++Builder workaround.
+    //constructor CreateNoWinCode(ACode: Integer);   // not C++Builder compatible.
     property WinCode: Integer read FWinCode write FWinCode;
     property Code: Integer read FCode write FCode;
   end;
@@ -1311,12 +1311,13 @@ begin
   if Assigned(FOnException) then
   begin
     if WinError > 0 then //get windows error string
-    try  Win32Check(winerror = 0);  except on E:Exception do WinMessage:=e.message; end;
+    try
+       Win32Check(winerror = 0);  except on E:Exception do WinMessage:=e.message; end;
     FOnException(self,TComExceptions(AnException),ComErrorMessages[AnException],WinError, WinMessage);
   end
     else
-      if WinError > 0 then raise EComPort.Create(AnException, WinError)
-       else raise EComPort.CreateNoWinCode(AnException);
+      if WinError > 0 then raise EComPort.Create(AnException, WinError,-1)
+       else raise EComPort.Create(AnException,-1,-1);
 
 end;
 // create handle to serial port
@@ -3359,21 +3360,19 @@ end;
  * EComPort exception                    *
  *****************************************)
 
-// create exception with windows error code
-constructor EComPort.Create(ACode: Integer; AWinCode: Integer);
+// create exception with windows error code, and one more parameter because SysUtils.Exception(int,int) is already
+// taken and creating a duplicate will break C++Builder compatibility, Thus the bogus unused AFuture parameter.
+constructor EComPort.Create(ACode: Integer; AWinCode,AFuture: Integer);
 begin
   FWinCode := AWinCode;
   FCode := ACode;
-  inherited CreateFmt(ComErrorMessages[ACode] + ' (Error: %d)', [AWinCode]);
+
+  if AWinCode=-1 then
+      inherited Create(ComErrorMessages[ACode])
+  else
+      inherited CreateFmt(ComErrorMessages[ACode] + ' (Error: %d)', [AWinCode]);
 end;
 
-// create exception
-constructor EComPort.CreateNoWinCode(ACode: Integer);
-begin
-  FWinCode := -1;
-  FCode := ACode;
-  inherited Create(ComErrorMessages[ACode]);
-end;
 
 (*****************************************
  * other procedures/functions            *
