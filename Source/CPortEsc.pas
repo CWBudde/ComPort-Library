@@ -429,12 +429,8 @@ var
 begin
   Result := ecNotCompleted;
   LastCh := Str[Length(Str)];
-  {$ifdef UNICODE}
-  if not SysUtils.CharInSet(LastCh,['A'..'Z', 'a'..'z']) then
-  {$else}
-  if not (LastCh in ['A'..'Z', 'a'..'z']) then
-  {$endif}
-    Exit;
+  {$IFDEF Unicode}  if not CharInSet(LastCh,['A'..'Z', 'a'..'z']) then  Exit;
+  {$ELSE}  if not (LastCh in ['A'..'Z', 'a'..'z']) then  Exit;  {$ENDIF}
   TempParams := TStringList.Create;
   try
     ParseParams(Copy(Str, 2, Length(Str) - 2));
