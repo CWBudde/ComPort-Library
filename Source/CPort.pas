@@ -387,7 +387,7 @@ type
     function WriteAsync(const Buffer; Count: Integer;  var AsyncPtr: PAsync): Integer;
     function WriteStrAsync(const Str: string; var AsyncPtr: PAsync): Integer;
     function ReadAsync(var Buffer; Count: Integer;   var AsyncPtr: PAsync): Integer;
-    function ReadStrAsync(var Str: string; Count: Integer;  var AsyncPtr: PAsync): Integer;
+    function ReadStrAsync(var Str: Ansistring; Count: Integer;  var AsyncPtr: PAsync): Integer;
     function WriteUnicodeString(const Str: Unicodestring): Integer;
     function ReadUnicodeString(var Str: UnicodeString; Count: Integer): Integer;
 
@@ -1833,8 +1833,11 @@ var sa : Ansistring;
 begin
   if Length(Str) > 0 then
   begin
-    sa := AnsiString(str);
-    Result := WriteAsync(Sa[1], Length(Str), AsyncPtr)
+    setlength(sa,length(str));
+    {$IFDEF Unicode}
+    if length(sa)>0 then
+      for i := 1 to length(sa) do sa[i] := char(byte(str[i]))
+    Result := WriteAsync(Sa[1], Length(Sa), AsyncPtr)
   end
   else
     Result := 0;
@@ -1870,13 +1873,19 @@ var
   rb: AnsiString;
   s : string;
   l: Integer;
+  AsyncPtr: PAsync;
 begin
-  setLength(s,count);
-  ReadStr(s, Count);
-  {$IFDEF Unicode}rb := UTF8Encode(s);{$ELSE} rb := s;  {$ENDIF}
-  l := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), nil, 0);
-  SetLength(Str, l);
-  Result := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), PWideChar(Str), l);
+  InitAsync(AsyncPtr);
+  try
+    setLength(rb,count);
+    Result := ReadAsync(rb[1], Count, AsyncPtr);  //  ReadStr(s, Count);
+    //{$IFDEF Unicode}rb := UTF8Encode(s);{$ELSE} rb := s;  {$ENDIF}
+    l := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), nil, 0);
+    SetLength(Str, l);
+    Result := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), PWideChar(Str), l);
+  finally
+    DoneAsync(AsyncPtr);
+  end;
 end;
 
 // perform asynchronous read operation
@@ -1918,16 +1927,11 @@ begin
 end;
 
 // perform asynchronous read operation
-function TCustomComPort.ReadStrAsync(var Str: string; Count: Integer; var AsyncPtr: PAsync): Integer;
-var sa :ansistring;
+function TCustomComPort.ReadStrAsync(var Str: Ansistring; Count: Integer; var AsyncPtr: PAsync): Integer;
 begin
-  SetLength(Str, Count);
+  setlength(str,count);
   if Count > 0 then
-  begin
-    sa := AnsiString(Str);
-    Result := ReadAsync(sa[1], Count, AsyncPtr);
-    str := String(Sa);
-  end
+    Result := ReadAsync(str[1], Count, AsyncPtr)
   else
     Result := 0;
 end;
@@ -1936,12 +1940,21 @@ end;
 function TCustomComPort.ReadStr(var Str: string; Count: Integer): Integer;
 var
   AsyncPtr: PAsync;
+  sa :ansistring;
+  i : integer;
 begin
   InitAsync(AsyncPtr);
   try
-    ReadStrAsync(Str, Count, AsyncPtr);
+    ReadStrAsync(sa, Count, AsyncPtr);
     Result := WaitForAsync(AsyncPtr);
-    SetLength(Str, Result);
+    SetLength(sa, Result);
+    SetLength(str, Result);
+    {$IFDEF Unicode}
+      if length(sa)>0 then
+      for i := 1 to length(sa) do str[i] := char(byte(sa[i]))
+    {$ELSE}
+      str := sa;
+    {$ENDIF}
   finally
     DoneAsync(AsyncPtr);
   end;
@@ -3243,12 +3256,16 @@ end;
 
 procedure TComDataPacket.RxBuf(Sender: TObject; const Buffer; Count: Integer);
 var sa:AnsiString; Str: string;
-
+      i:integer;
 begin
   SetLength(Str, Count);
   SetLength(Sa, Count);
   Move(Buffer, Sa[1], Count);
-  Str := String(sa);
+  {$IFDEF Unicode}
+  if length(sa)>0 then
+    for i := 1 to length(sa) do str[i] := char(byte(sa[i]))
+  {$ELSE}  str := sa;  {$ENDIF}  
+//  Str := String(sa);
   AddData(Str);
 end;
 
