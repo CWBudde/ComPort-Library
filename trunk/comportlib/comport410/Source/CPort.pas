@@ -381,11 +381,11 @@ type
     function LastErrors: TComErrors;
 
     function Write(const Buffer; Count: Integer): Integer;
-    function WriteStr(const Str: string): Integer;
+    function WriteStr( Str: string): Integer;
     function Read(var Buffer; Count: Integer): Integer;
     function ReadStr(var Str: string; Count: Integer): Integer;
     function WriteAsync(const Buffer; Count: Integer;  var AsyncPtr: PAsync): Integer;
-    function WriteStrAsync(const Str: string; var AsyncPtr: PAsync): Integer;
+    function WriteStrAsync(var Str: string; var AsyncPtr: PAsync): Integer;
     function ReadAsync(var Buffer; Count: Integer;   var AsyncPtr: PAsync): Integer;
     function ReadStrAsync(var Str: Ansistring; Count: Integer;  var AsyncPtr: PAsync): Integer;
     function WriteUnicodeString(const Str: Unicodestring): Integer;
@@ -1828,22 +1828,26 @@ begin
 end;
 
 // perform asynchronous write operation
-function TCustomComPort.WriteStrAsync(const Str: string; var AsyncPtr: PAsync): Integer;
-var sa : Ansistring;
+function TCustomComPort.WriteStrAsync(var Str: string; var AsyncPtr: PAsync): Integer;
+var sa : Ansistring; var i:integer;
 begin
   if Length(Str) > 0 then
   begin
     setlength(sa,length(str));
     {$IFDEF Unicode}
     if length(sa)>0 then
-      for i := 1 to length(sa) do sa[i] := char(byte(str[i]))
-    Result := WriteAsync(Sa[1], Length(Sa), AsyncPtr)
+    begin
+      for i := 1 to length(str) do sa[i] := ansichar(byte(str[i]));
+      move(sa[1],str[1],length(sa));
+    end;
+    {$ENDIF}
+    Result := WriteAsync(Str[1], Length(Str), AsyncPtr)
   end
   else
     Result := 0;
 end;
 // perform synchronous write operation
-function TCustomComPort.WriteStr(const Str: string): Integer;
+function TCustomComPort.WriteStr(Str: string): Integer;
 var
   AsyncPtr: PAsync;
 begin
@@ -3263,9 +3267,8 @@ begin
   Move(Buffer, Sa[1], Count);
   {$IFDEF Unicode}
   if length(sa)>0 then
-    for i := 1 to length(sa) do str[i] := char(byte(sa[i]))
-  {$ELSE}  str := sa;  {$ENDIF}  
-//  Str := String(sa);
+    for i := 1 to length(sa) do str[i] := char(byte(sa[i]));
+  {$ELSE}  str := sa;  {$ENDIF}
   AddData(Str);
 end;
 
