@@ -13,7 +13,7 @@
 
 
 unit CPort;
-
+{$T-} // typed @ operator off
 {$I CPort.inc}
 {.$DEFINE No_Dialogs} //removes forms setup/config code
 interface
