@@ -2565,20 +2565,29 @@ var
   var
     I: Integer;
   begin
-    for I := 1 to Length(Str) do
-      Str[I] := Char(Byte(Str[I]) and $0FFFFFFF);
+    SetLength(Str, Count);
+    for I := 1 to Count do
+      Str[I] := Char(Byte(SA[I]) and $0FFFFFFF);
   end;
 
+  // convert to 7 bit data
+  procedure Force8BitData;
+  var
+    I: Integer;
+  begin
+    SetLength(Str, Count);
+    for I := 1 to Count do
+      Str[I] := Char(Byte(SA[I]));
+  end;
+  
 begin
   SetLength(sa,count);
   Move(Buffer, Sa[1], Count);
-  SetLength(Str, Count);
-//  Move(Buffer, Str[1], Count);
-  Str := String(sa);
+  if FForce7Bit then
+    Force7BitData
+  else Force8BitData; //Str :=  AnsiString(sa);
   if FAppendLF then
     AppendLineFeeds;
-  if FForce7Bit then
-    Force7BitData;
   StringReceived(Str);
 end;
 
