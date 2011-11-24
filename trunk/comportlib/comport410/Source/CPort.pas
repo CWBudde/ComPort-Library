@@ -1,6 +1,6 @@
 (******************************************************
  * ComPort Library ver. 4.11                          *
- *   for Delphi 3, 4, 5, 6, 7, 2007-2010,XE  and      *
+ *   for Delphi 5, 6, 7, 2007-2010,XE  and            *
  *   C++ Builder 3, 4, 5, 6                           *
  * written by Dejan Crnila, 1998 - 2002               *
  * maintained by Lars B. Dybdahl, 2003                *
@@ -13,7 +13,7 @@
 
 
 unit CPort;
-{$T-} // typed @ operator off
+{$Warnings OFF}
 {$I CPort.inc}
 {.$DEFINE No_Dialogs} //removes forms setup/config code
 interface
@@ -1875,7 +1875,6 @@ end;
 function TCustomComPort.ReadUnicodeString(var Str: UnicodeString; Count: Integer): Integer;
 var
   rb: AnsiString;
-  s : string;
   l: Integer;
   AsyncPtr: PAsync;
 begin
@@ -2919,7 +2918,7 @@ begin
   end;
 end;
 
-// set discard null charachters
+// set discard null characters
 procedure TCustomComPort.SetDiscardNull(const Value: Boolean);
 begin
   if Value <> FDiscardNull then
@@ -2929,7 +2928,7 @@ begin
   end;
 end;
 
-// set event charachters
+// set event characters
 procedure TCustomComPort.SetEventChar(const Value: Char);
 begin
   if Value <> FEventChar then

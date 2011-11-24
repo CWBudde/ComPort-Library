@@ -1,6 +1,6 @@
 (******************************************************
  * ComPort Library ver. 4.11                          *
- *   for Delphi 3, 4, 5, 6, 7 and                     *
+ *   for Delphi 5, 6, 7, 2007-2010,XE  and            *
  *   C++ Builder 3, 4, 5, 6                           *
  * written by Dejan Crnila, 1998 - 2002               *
  * maintained by Lars B. Dybdahl, 2003                *
