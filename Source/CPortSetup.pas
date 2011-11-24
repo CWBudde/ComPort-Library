@@ -1,6 +1,6 @@
 
 (******************************************************
- * ComPort Library ver. 4.0                           *
+ * ComPort Library ver. 4.11                          *
  *   for Delphi  7, 2007, 2009                        *
  * written by Dejan Crnila, 1998 - 2002               *
  * maintained by Lars B. Dybdahl, 2003                *
