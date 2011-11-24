@@ -1,6 +1,6 @@
 (******************************************************
  * ComPort Library ver. 4.11                          *
- *   for Delphi 3, 4, 5, 6, 7, 2007-2010,XE  and      *
+ *   for Delphi 5, 6, 7, 2007-2010,XE  and            *
  *   C++ Builder 3, 4, 5, 6                           *
  * written by Dejan Crnila, 1998 - 2002               *
  * maintained by Lars B. Dybdahl, 2003                *
@@ -24,7 +24,7 @@
   splitsing between linefeed and newpage
 }
 unit CPortCtl;
-
+{$Warnings OFF}
 {$I CPort.inc}
 
 interface
@@ -313,7 +313,7 @@ type
 
   TCustomComTerminal = class;  // forward declaration
 
-  // terminal charachter
+  // terminal character
   TComTermChar = record
     Ch: Char;
     FrontColor: TColor;
@@ -1194,7 +1194,7 @@ end;
 procedure TComLed.SetState(const Value: TLedState);
 begin
   if FComPort <> nil then
-    raise EComPort.Create(CError_LedStateFailed,-1,-1);
+    raise EComPort.CreateNoWinCode(CError_LedStateFailed);
   SetStateInternal(Value);
 end;
 
@@ -1502,7 +1502,7 @@ begin
       Result := J;
 end;
 
-// get last charachter in buffer
+// get last character in buffer
 (*****************************************
  * TComCustomTerminal control            *
  *****************************************)
@@ -1590,7 +1590,7 @@ begin
       begin
         Res := FEscapeCodes.ProcessChar(Ch);
         if Res = erChar then
-          PutChar(FEscapeCodes.Charachter);
+          PutChar(FEscapeCodes.Character);
         if Res = erCode then
         begin
           if not PutEscapeCode(FEscapeCodes.Code, FEscapeCodes.Params) then
@@ -1652,7 +1652,7 @@ begin
       for I := 1 to LastChar do
       begin
         Ch := FBuffer.GetChar(I, J).Ch;
-        // replace null charachters with blanks
+        // replace null characters with blanks
         if Ch = #0 then
           Ch := #32;
         Stream.Write(Ch, 1);
@@ -1876,7 +1876,7 @@ begin
     ComPort := nil;
 end;
 
-// paint charachters
+// paint characters
 procedure TCustomComTerminal.PaintTerminal(Rect: TRect);
 var
   I, J, X, Y: Integer;
@@ -1951,7 +1951,7 @@ begin
   WriteStr(Str);
 end;
 
-// draw one charachter on screen, but do not put it in buffer
+// draw one character on screen, but do not put it in buffer
 procedure TCustomComTerminal.DrawChar(AColumn, ARow: Integer;
   Ch: TComTermChar);
 var
@@ -2021,7 +2021,7 @@ begin
   end;
 end;
 
-// set charachter attributes
+// set character attributes
 procedure TCustomComTerminal.SetAttributes(AParams: TStrings);
 var
   I, Value: Integer;
@@ -2274,7 +2274,7 @@ begin
     Windows.ShowCaret(Handle);
 end;
 
-// send charachter to com port
+// send character to com port
 procedure TCustomComTerminal.SendChar(Ch: Char);
 begin
   if (FComPort <> nil) and (FComPort.Connected) then
@@ -2282,7 +2282,7 @@ begin
     FComPort.WriteStr(Ch);
     if FLocalEcho then
     begin
-      // local echo is on, show charachter on screen
+      // local echo is on, show character on screen
       HideCaret;
       PutChar(Ch);
       ShowCaret;
@@ -2301,7 +2301,7 @@ begin
     FComPort.WriteStr(FEscapeCodes.EscCodeToStr(Code, AParams));
     if FLocalEcho then
     begin
-      // local echo is on, show charachter on screen
+      // local echo is on, show character on screen
       HideCaret;
       PutEscapeCode(Code, AParams);
       ShowCaret;
@@ -2391,7 +2391,7 @@ begin
   Result := (Metrics.tmPitchAndFamily and TMPF_FIXED_PITCH) = 0;
 end;
 
-// visual charachter is appears on screen
+// visual character is appears on screen
 procedure TCustomComTerminal.DoChar(Ch: Char);
 begin
   if Assigned(FOnChar) then
@@ -2456,7 +2456,7 @@ begin
   Invalidate;
 end;
 
-// get current charachter properties
+// get current character properties
 function TCustomComTerminal.GetCharAttr: TComTermChar;
 begin
   // NEW made changes to solve colorchanging problem
@@ -2480,7 +2480,7 @@ begin
   Result.Ch := #0;
 end;
 
-// put one charachter on screen
+// put one character on screen
 procedure TCustomComTerminal.PutChar(Ch: Char);
 var
   TermCh: TComTermChar;
@@ -2566,26 +2566,27 @@ var
     I: Integer;
   begin
     SetLength(Str, Count);
-    for I := 1 to Count do
-      Str[I] := Char(Byte(SA[I]) and $0FFFFFFF);
+    for I := 1 to Length(Str) do
+      Str[I] := Char(Byte(Sa[I]) and $0FFFFFFF);
   end;
 
-  // convert to 7 bit data
   procedure Force8BitData;
   var
     I: Integer;
   begin
     SetLength(Str, Count);
-    for I := 1 to Count do
-      Str[I] := Char(Byte(SA[I]));
+    for I := 1 to Length(Str) do
+      Str[I] := Char(Byte(Sa[I]));
   end;
-  
+
 begin
   SetLength(sa,count);
   Move(Buffer, Sa[1], Count);
+//  Move(Buffer, Str[1], Count);
+//  Str := AnsiString(sa);
   if FForce7Bit then
     Force7BitData
-  else Force8BitData; //Str :=  AnsiString(sa);
+  else Force8BitData;
   if FAppendLF then
     AppendLineFeeds;
   StringReceived(Str);
