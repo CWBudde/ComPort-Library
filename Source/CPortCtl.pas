@@ -864,8 +864,8 @@ end;
 
 procedure TComComboBox.SetText(const Value: string);
 begin
-  if Items.IndexOf(Value) > -1 then
-    ItemIndex := Items.IndexOf(Value);
+  if Items.IndexOf(Value) > -1 then begin
+    ItemIndex := Items.IndexOf(Value); Change; end;
 end;
 
 // change property for selecting
