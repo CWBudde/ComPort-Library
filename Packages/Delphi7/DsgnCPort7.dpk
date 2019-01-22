@@ -1,4 +1,4 @@
-package CPortLib7;
+package DsgnCPort7;
 
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -22,18 +22,16 @@ package CPortLib7;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ComPort Library'}
+{$DESIGNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
   vcl,
-  rtl,
-  vclx;
+  CPortLib7,
+  designide;
 
 contains
-  CPort in '..\Source\CPort.pas',
-  CPortSetup in '..\Source\CPortSetup.pas' {ComSetupFrm},
-  CPortCtl in '..\Source\CPortCtl.pas',
-  CPortEsc in '..\Source\CPortEsc.pas',
-  CPortTrmSet in '..\Source\CPortTrmSet.pas' {ComTrmSetForm};
+  CPortReg in '..\..\Source\CPortReg.pas',
+  CPortAbout in '..\..\Source\CPortAbout.pas' {AboutBox};
 
 end.

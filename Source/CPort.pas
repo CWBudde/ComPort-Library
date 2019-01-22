@@ -11,32 +11,43 @@
  *     Made unicode ready                             *
  *****************************************************)
 
-
 unit CPort;
+
 {$Warnings OFF}
 {$I CPort.inc}
 {.$DEFINE No_Dialogs} //removes forms setup/config code
+
 interface
 
 uses
   Windows, Messages, Classes, SysUtils, IniFiles, Registry;
 
 type
-  TComExceptions = ( CE_OpenFailed      ,    CE_WriteFailed     ,
-                        CE_ReadFailed      ,    CE_InvalidAsync    ,
-                        CE_PurgeFailed     ,    CE_AsyncCheck      ,
-                        CE_SetStateFailed  ,    CE_TimeoutsFailed  ,
-                        CE_SetupComFailed  ,    CE_ClearComFailed  ,
-                        CE_ModemStatFailed ,    CE_EscapeComFailed ,
-                        CE_TransmitFailed  ,    CE_ConnChangeProp  ,
-                        CE_EnumPortsFailed ,    CE_StoreFailed     ,
-                        CE_LoadFailed      ,    CE_RegFailed       ,
-                        CE_LedStateFailed  ,    CE_ThreadCreated   ,
-                        CE_WaitFailed      ,    CE_HasLink         ,
-                        CE_RegError        ,    CEPortNotOpen     );
-
-
-
+  TComExceptions = (
+    CE_OpenFailed,    
+    CE_WriteFailed,
+    CE_ReadFailed, 
+    CE_InvalidAsync,
+    CE_PurgeFailed,    
+    CE_AsyncCheck,
+    CE_SetStateFailed,    
+    CE_TimeoutsFailed,
+    CE_SetupComFailed,    
+    CE_ClearComFailed,
+    CE_ModemStatFailed,    
+    CE_EscapeComFailed,
+    CE_TransmitFailed,    
+    CE_ConnChangeProp,
+    CE_EnumPortsFailed,    
+    CE_StoreFailed,
+    CE_LoadFailed,    
+    CE_RegFailed,
+    CE_LedStateFailed,    
+    CE_ThreadCreated,
+    CE_WaitFailed,    
+    CE_HasLink,
+    CE_RegError,    
+    CEPortNotOpen);
 
   // various types
   TPort = string;
@@ -292,9 +303,9 @@ type
     FOnAfterClose: TNotifyEvent;
     FOnBeforeOpen: TNotifyEvent;
     FOnBeforeClose: TNotifyEvent;
-    FOnRx80Full : TNotifyEvent;
-    FOnException :TComExceptionEvent;
-    FCodePage   : Cardinal;
+    FOnRx80Full: TNotifyEvent;
+    FOnException: TComExceptionEvent;
+    FCodePage: Cardinal;
     function GetTriggersOnRxChar: Boolean;
     procedure SetTriggersOnRxChar(const Value: Boolean);
     procedure SetConnected(const Value: Boolean);
