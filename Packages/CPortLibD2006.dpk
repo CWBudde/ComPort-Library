@@ -1,6 +1,5 @@
 package CPortLibD2006;
 
-{$R *.res}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}

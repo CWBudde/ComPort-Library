@@ -1,6 +1,5 @@
 package DsgnCPort4;
 
-{$R *.RES}
 {$ALIGN ON}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}

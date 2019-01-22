@@ -1,4 +1,4 @@
-package CPortLibDXE4;
+package DsgnCPortDXE;
 
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -21,20 +21,17 @@ package CPortLibDXE4;
 {$WRITEABLECONST ON}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ComPort Library'}
-{$RUNONLY}
+{$DESCRIPTION 'ComPort Library Delphi XE'}
+{$DESIGNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
   vcl,
-  rtl,
-  vclx;
+  CPortLibDXE,
+  designide;
 
 contains
-  CPort in '..\Source\CPort.pas',
-  CPortSetup in '..\Source\CPortSetup.pas' {ComSetupFrm},
-  CPortCtl in '..\Source\CPortCtl.pas',
-  CPortEsc in '..\Source\CPortEsc.pas',
-  CPortTrmSet in '..\Source\CPortTrmSet.pas' {ComTrmSetForm};
+  CPortReg in '..\Source\CPortReg.pas',
+  CPortAbout in '..\Source\CPortAbout.pas' {AboutBox};
 
 end.
