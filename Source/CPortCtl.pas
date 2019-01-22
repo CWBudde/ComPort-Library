@@ -24,6 +24,7 @@
   splitsing between linefeed and newpage
 }
 unit CPortCtl;
+
 {$Warnings OFF}
 {$I CPort.inc}
 
