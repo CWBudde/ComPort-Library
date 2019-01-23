@@ -27,9 +27,9 @@ The master branch is focused on Delphi and all CBuilder support has been removed
 | Delphi 8 | .\Packages\D8\CPortLib8.dpk | .\Packages\D8\DsgnCPort8.dpk | not sufficiently tested |
 | Delphi 2005 | .\Packages\D2005\CPortLib2005.dpk | .\Packages\D2005\DsgnCPort2005.dpk | not sufficiently tested |
 | Delphi 2006 | .\Packages\D2006\CPortLib2006.dpk | .\Packages\D2006\DsgnCPort2006.dpk | not sufficiently tested |
-| Delphi 2007 | .\Packages\D2007\CPortLib2007.dpk | .\Packages\D2007\DsgnCPort2007.dpk | not sufficiently tested |
+| Delphi 2007 | .\Packages\D2007\CPort_R.dpk | .\Packages\D2007\CPort_D.dpk | not sufficiently tested |
 | Delphi 2009 | .\Packages\D2009\CPort_R.dpk | .\Packages\D2009\CPort_D.dpk | not sufficiently tested |
-| Delphi 2010 | .\Packages\2010\CPort_R.dpk | .\Packages\2010\CPort_D.dpk | should work |
+| Delphi 2010 | .\Packages\D2010\CPort_R.dpk | .\Packages\D2010\CPort_D.dpk | should work |
 | Delphi XE | .\Packages\XE\CPort_R.dpk | .\Packages\XE\CPort_D.dpk | should work |
 | Delphi XE2 | .\Packages\XE2\CPort_R.dpk | .\Packages\XE2\CPort_D.dpk | tested |
 | Delphi XE3 | .\Packages\XE3\CPort_R.dpk | .\Packages\XE3\CPort_D.dpk | should work |
