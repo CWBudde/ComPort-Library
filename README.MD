@@ -22,7 +22,7 @@ As it is a fork, some of the original commit messages are still accessible.
 ## Package names
 
 | Delphi Version | Design-Time | Run-Time | State |
-|---|---|---|
+|---|---|---|---|
 | Delphi 3 | .\Packages\D3\DsgnCPort3.dpk | .\Packages\D3\CPortLib3.dpk | not officially supported |
 | Delphi 4 | .\Packages\D4\DsgnCPort4.dpk | .\Packages\D4\CPortLib4.dpk | not officially supported |
 | Delphi 5 | .\Packages\D5\DsgnCPort5.dpk | .\Packages\D5\CPortLib5.dpk | not officially supported |
