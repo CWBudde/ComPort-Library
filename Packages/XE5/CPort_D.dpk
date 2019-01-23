@@ -1,4 +1,4 @@
-package CPort_R;
+package CPort_D;
 
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
@@ -24,20 +24,18 @@ package CPort_R;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'ComPort Library'}
-{$LIBSUFFIX '101B'}
-{$RUNONLY}
+{$DESCRIPTION 'ComPort Library Delphi'}
+{$LIBSUFFIX 'XE5'}
+{$DESIGNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
   vcl,
-  rtl;
+  CPort_R,
+  designide;
 
 contains
-  CPort in '..\..\Source\CPort.pas',
-  CPortSetup in '..\..\Source\CPortSetup.pas' {ComSetupFrm},
-  CPortCtl in '..\..\Source\CPortCtl.pas',
-  CPortEsc in '..\..\Source\CPortEsc.pas',
-  CPortTrmSet in '..\..\Source\CPortTrmSet.pas' {ComTrmSetForm};
+  CPortReg in '..\..\Source\CPortReg.pas',
+  CPortAbout in '..\..\Source\CPortAbout.pas' {AboutBox};
 
 end.

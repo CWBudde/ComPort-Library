@@ -7,7 +7,7 @@
         <AppType>Package</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-        <ProjectVersion>16.1</ProjectVersion>
+        <ProjectVersion>15.4</ProjectVersion>
         <TargetedPlatforms>1</TargetedPlatforms>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
     </PropertyGroup>
@@ -71,7 +71,7 @@
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <DllSuffix>XE7</DllSuffix>
+        <DllSuffix>XE6</DllSuffix>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
