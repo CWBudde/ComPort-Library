@@ -2542,10 +2542,10 @@ begin
   FSaveAttr := FTermAttr;
 end;
 
-procedure TCustomComTerminal.RxBuf(Sender: TObject; const Buffer;  Count: Integer);
+procedure TCustomComTerminal.RxBuf(Sender: TObject; const Buffer; Count: Integer);
 var
   Str: String;
-  sa : Ansistring;
+  sa: AnsiString;
 
   // append line feeds to carriage return
   procedure AppendLineFeeds;

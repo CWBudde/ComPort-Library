@@ -27,10 +27,6 @@ type
     OKButton: TButton;
     Label1: TLabel;
     procedure FormCreate(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 // show about box

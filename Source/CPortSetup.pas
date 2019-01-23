@@ -40,10 +40,6 @@ type
     Combo5: TComComboBox;
     Combo6: TComComboBox;
     Combo1: TComComboBox;
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 procedure EditComPort(ComPort: TCustomComPort);

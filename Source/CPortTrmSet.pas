@@ -17,29 +17,25 @@ uses
 
 type
   TComTrmSetForm = class(TForm)
-    GroupBox1: TGroupBox;
+    Button1: TButton;
+    Button2: TButton;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
     CheckBox3: TCheckBox;
     CheckBox4: TCheckBox;
     CheckBox5: TCheckBox;
-    GroupBox2: TGroupBox;
-    Label1: TLabel;
     ComboBox1: TComboBox;
-    Label3: TLabel;
-    Label4: TLabel;
     ComboBox2: TComboBox;
-    Label2: TLabel;
     ComboBox3: TComboBox;
-    Label5: TLabel;
-    Button1: TButton;
-    Button2: TButton;
     Edit1: TEdit;
     Edit2: TEdit;
-  private
-    { Private declarations }
-  public
-    { Public declarations }
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
   end;
 
 procedure EditComTerminal(ComTerminal: TCustomComTerminal);

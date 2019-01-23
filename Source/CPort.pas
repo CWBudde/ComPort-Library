@@ -398,7 +398,7 @@ type
     function WriteAsync(const Buffer; Count: Integer;  var AsyncPtr: PAsync): Integer;
     function WriteStrAsync(var Str: string; var AsyncPtr: PAsync): Integer;
     function ReadAsync(var Buffer; Count: Integer;   var AsyncPtr: PAsync): Integer;
-    function ReadStrAsync(var Str: Ansistring; Count: Integer;  var AsyncPtr: PAsync): Integer;
+    function ReadStrAsync(var Str: AnsiString; Count: Integer;  var AsyncPtr: PAsync): Integer;
     function WriteUnicodeString(const Str: Unicodestring): Integer;
     function ReadUnicodeString(var Str: UnicodeString; Count: Integer): Integer;
 
@@ -647,10 +647,10 @@ const
 function ComErrorsToStr(Errors:TComErrors):String;
   procedure e(msg:String);
   begin
-     if result='' then
+     if result = '' then
         result := msg
      else
-        result := result+','+msg;
+        result := result + ',' + msg;
   end;
 begin
    result := '';
@@ -786,9 +786,12 @@ end;
 procedure TComThread.DispatchComMsg;
 begin
   case FComPort.SyncMethod of
-    smThreadSync: Synchronize(DoEvents); // call events in main thread
-    smWindowSync: SendEvents; // call events in thread that opened the port
-    smNone:       DoEvents; // call events inside monitoring thread
+    smThreadSync:
+      Synchronize(DoEvents); // call events in main thread
+    smWindowSync:
+      SendEvents; // call events in thread that opened the port
+    smNone:
+      DoEvents; // call events inside monitoring thread
   end;
 end;
 
@@ -1322,7 +1325,7 @@ begin
   if Assigned(FOnException) then
   begin
     if WinError > 0 then //get windows error string
-    try  Win32Check(winerror = 0);  except on E:Exception do WinMessage:=e.message; end;
+    try  Win32Check(winerror = 0);  except on E:Exception do WinMessage := e.message; end;
     FOnException(self,TComExceptions(AnException),ComErrorMessages[AnException],WinError, WinMessage);
   end
     else
@@ -1840,7 +1843,9 @@ end;
 
 // perform asynchronous write operation
 function TCustomComPort.WriteStrAsync(var Str: string; var AsyncPtr: PAsync): Integer;
-var sa : Ansistring; var i:integer;
+var
+  sa: AnsiString;
+  i: Integer;
 begin
   if Length(Str) > 0 then
   begin
@@ -1857,6 +1862,7 @@ begin
   else
     Result := 0;
 end;
+
 // perform synchronous write operation
 function TCustomComPort.WriteStr(Str: string): Integer;
 var
@@ -1870,6 +1876,7 @@ begin
     DoneAsync(AsyncPtr);
   end;
 end;
+
 //Pierre Yager - includes codepage converstion of strings being sent
 function TCustomComPort.WriteUnicodeString(const Str: Unicodestring): Integer;
 var
@@ -1941,7 +1948,7 @@ begin
 end;
 
 // perform asynchronous read operation
-function TCustomComPort.ReadStrAsync(var Str: Ansistring; Count: Integer; var AsyncPtr: PAsync): Integer;
+function TCustomComPort.ReadStrAsync(var Str: AnsiString; Count: Integer; var AsyncPtr: PAsync): Integer;
 begin
   setlength(str,count);
   if Count > 0 then
@@ -1954,8 +1961,8 @@ end;
 function TCustomComPort.ReadStr(var Str: string; Count: Integer): Integer;
 var
   AsyncPtr: PAsync;
-  sa :ansistring;
-  i : integer;
+  sa: AnsiString;
+  i: Integer;
 begin
   InitAsync(AsyncPtr);
   try
@@ -3270,7 +3277,7 @@ end;
 
 procedure TComDataPacket.RxBuf(Sender: TObject; const Buffer; Count: Integer);
 var sa:AnsiString; Str: string;
-      i:integer;
+      i:Integer;
 begin
   SetLength(Str, Count);
   SetLength(Sa, Count);
@@ -3634,30 +3641,29 @@ begin
 end;
 
 initialization
-  ComErrorMessages[1]:='Unable to open com port';
-  ComErrorMessages[2]:='WriteFile function failed';
-  ComErrorMessages[3]:='ReadFile function failed';
-  ComErrorMessages[4]:='Invalid Async parameter';
-  ComErrorMessages[5]:='PurgeComm function failed';
-  ComErrorMessages[6]:='Unable to get async status';
-  ComErrorMessages[7]:='SetCommState function failed';
-  ComErrorMessages[8]:='SetCommTimeouts failed';
-  ComErrorMessages[9]:='SetupComm function failed';
-  ComErrorMessages[10]:='ClearCommError function failed';
-  ComErrorMessages[11]:='GetCommModemStatus function failed';
-  ComErrorMessages[12]:='EscapeCommFunction function failed';
-  ComErrorMessages[13]:='TransmitCommChar function failed';
-  ComErrorMessages[14]:='Cannot set property while connected';
-  ComErrorMessages[15]:='EnumPorts function failed';
-  ComErrorMessages[16]:='Failed to store settings';
-  ComErrorMessages[17]:='Failed to load settings';
-  ComErrorMessages[18]:='Link (un)registration failed';
-  ComErrorMessages[19]:='Cannot change led state if ComPort is selected';
-  ComErrorMessages[20]:='Cannot wait for event if event thread is created';
-  ComErrorMessages[21]:='WaitForEvent method failed';
-  ComErrorMessages[22]:='A component is linked to OnRxBuf event';
-  ComErrorMessages[23]:='Registry error';
-  ComErrorMessages[24]:='Port Not Open';//  CError_PortNotOpen
-
+  ComErrorMessages[1] := 'Unable to open com port';
+  ComErrorMessages[2] := 'WriteFile function failed';
+  ComErrorMessages[3] := 'ReadFile function failed';
+  ComErrorMessages[4] := 'Invalid Async parameter';
+  ComErrorMessages[5] := 'PurgeComm function failed';
+  ComErrorMessages[6] := 'Unable to get async status';
+  ComErrorMessages[7] := 'SetCommState function failed';
+  ComErrorMessages[8] := 'SetCommTimeouts failed';
+  ComErrorMessages[9] := 'SetupComm function failed';
+  ComErrorMessages[10] := 'ClearCommError function failed';
+  ComErrorMessages[11] := 'GetCommModemStatus function failed';
+  ComErrorMessages[12] := 'EscapeCommFunction function failed';
+  ComErrorMessages[13] := 'TransmitCommChar function failed';
+  ComErrorMessages[14] := 'Cannot set property while connected';
+  ComErrorMessages[15] := 'EnumPorts function failed';
+  ComErrorMessages[16] := 'Failed to store settings';
+  ComErrorMessages[17] := 'Failed to load settings';
+  ComErrorMessages[18] := 'Link (un)registration failed';
+  ComErrorMessages[19] := 'Cannot change led state if ComPort is selected';
+  ComErrorMessages[20] := 'Cannot wait for event if event thread is created';
+  ComErrorMessages[21] := 'WaitForEvent method failed';
+  ComErrorMessages[22] := 'A component is linked to OnRxBuf event';
+  ComErrorMessages[23] := 'Registry error';
+  ComErrorMessages[24] := 'Port Not Open';//  CError_PortNotOpen
 
 end.
