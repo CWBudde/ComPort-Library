@@ -9,44 +9,47 @@ As it is a fork, some of the original commit messages are still accessible.
 
 ## Requirements
 
-**Delphi:** 3, 4, 5, 6, 7, 2005, 2006, 2007, 2010, XE, XE2, XE3, XE4, XE5, XE6, XE7, XE8, RS10, RS10.1, RS10.2, RS10.3
+**Delphi:** (3, 4, 5, 6,) 7, 2005, 2006, 2007, 2010, XE, XE2, XE3, XE4, XE5, XE6, XE7, XE8, RS10, RS10.1, RS10.2, RS10.3
+
 **C++ Builder:** 3, 4, 5, 6 (not actively supported)
 
 ## Authors
+
 **Original Author:** Dejan Crnila 1998-2002 (dejancrn@yahoo.com)
+
 **Former Maintainers:** Lars Dybdahl (Lars@dybdahl.dk), Paul Doland (cport@pauld.ml1.net), Brian Gochnauer (brian@gochanuer.net)
 
 ## Package names
 
-| Delphi Version | Design-Time | Run-Time |
+| Delphi Version | Design-Time | Run-Time | State |
 |---|---|---|
-| Delphi 3 | DsgnCPort3.dpk | CPortLib3.dpk |
-| Delphi 4 | DsgnCPort4.dpk | CPortLib4.dpk |
-| Delphi 5 | DsgnCPort5.dpk | CPortLib5.dpk |
-| Delphi 6 | DsgnCPort6.dpk | CPortLib6.dpk |
-| Delphi 7 | DsgnCPort7.dpk | CPortLib7.dpk |
-| Delphi 8 | DsgnCPort8.dpk | CPortLib8.dpk |
-| Delphi 2005 | DsgnCPort2005.dpk | CPortLib2005.dpk |
-| Delphi 2006 | DsgnCPort2006.dpk | CPortLib2006.dpk |
-| Delphi 2007 | DsgnCPort2007.dpk | CPortLib2007.dpk |
-| Delphi 2009 | DsgnCPort2009.dpk | CPortLib2009.dpk |
-| Delphi 2010 | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE2 | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE3 | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE4 | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE5 | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE6 | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE7 | CPort_R.dpk | CPort_D.dpk |
-| Delphi XE8 | CPort_R.dpk | CPort_D.dpk |
-| Delphi RS 10 | CPort_R.dpk | CPort_D.dpk |
-| Delphi RS 10.1 | CPort_R.dpk | CPort_D.dpk |
-| Delphi RS 10.2 | CPort_R.dpk | CPort_D.dpk |
-| Delphi RS 10.3 | CPort_R.dpk | CPort_D.dpk |
-| C++ Builder 3 | DsgnCPortCB3.bpk | CPortLibCB3.bpk |
-| C++ Builder 4 | DsgnCPortCB4.bpk | CPortLibCB4.bpk |
-| C++ Builder 5 | DsgnCPortCB5.bpk | CPortLibCB5.bpk |
-| C++ Builder 6 | DsgnCPortCB6.bpk | CPortLibCB6.bpk |
+| Delphi 3 | .\Packages\D3\DsgnCPort3.dpk | .\Packages\D3\CPortLib3.dpk | not officially supported |
+| Delphi 4 | .\Packages\D4\DsgnCPort4.dpk | .\Packages\D4\CPortLib4.dpk | not officially supported |
+| Delphi 5 | .\Packages\D5\DsgnCPort5.dpk | .\Packages\D5\CPortLib5.dpk | not officially supported |
+| Delphi 6 | .\Packages\D6\DsgnCPort6.dpk | .\Packages\D6\CPortLib6.dpk | not officially supported |
+| Delphi 7 | .\Packages\D7\DsgnCPort7.dpk | .\Packages\D7\CPortLib7.dpk | not sufficiently tested |
+| Delphi 8 | .\Packages\D8\DsgnCPort8.dpk | .\Packages\D8\CPortLib8.dpk | not sufficiently tested |
+| Delphi 2005 | .\Packages\D2005\DsgnCPort2005.dpk | .\Packages\D2005\CPortLib2005.dpk | not sufficiently tested |
+| Delphi 2006 | .\Packages\D2006\DsgnCPort2006.dpk | .\Packages\D2006\CPortLib2006.dpk | not sufficiently tested |
+| Delphi 2007 | .\Packages\D2007\DsgnCPort2007.dpk | .\Packages\D2007\CPortLib2007.dpk | not sufficiently tested |
+| Delphi 2009 | .\Packages\D2009\DsgnCPort2009.dpk | .\Packages\D2009\CPortLib2009.dpk | not sufficiently tested |
+| Delphi 2010 | .\Packages\2010\CPort_R.dpk | .\Packages\2010\CPort_D.dpk | should work |
+| Delphi XE | .\Packages\XE\CPort_R.dpk | .\Packages\XE\CPort_D.dpk | should work |
+| Delphi XE2 | .\Packages\XE2\CPort_R.dpk | .\Packages\XE2\CPort_D.dpk | tested |
+| Delphi XE3 | .\Packages\XE3\CPort_R.dpk | .\Packages\XE3\CPort_D.dpk | should work |
+| Delphi XE4 | .\Packages\XE4\CPort_R.dpk | .\Packages\XE4\.dpk | should work |
+| Delphi XE5 | .\Packages\XE5\CPort_R.dpk | .\Packages\XE5\CPort_D.dpk | should work |
+| Delphi XE6 | .\Packages\XE6\CPort_R.dpk | .\Packages\XE6\CPort_D.dpk | should work |
+| Delphi XE7 | .\Packages\XE7\CPort_R.dpk | .\Packages\XE7\CPort_D.dpk | tested |
+| Delphi XE8 | .\Packages\XE8\CPort_R.dpk | .\Packages\XE8\CPort_D.dpk | should work |
+| Delphi RS 10 | .\Packages\10S\CPort_R.dpk | .\Packages\10S\CPort_D.dpk | should work |
+| Delphi RS 10.1 | .\Packages\101B\CPort_R.dpk | .\Packages\101B\CPort_D.dpk | tested |
+| Delphi RS 10.2 | .\Packages\102T\CPort_R.dpk | .\Packages\102T\CPort_D.dpk | tested |
+| Delphi RS 10.3 | .\Packages\103R\CPort_R.dpk | .\Packages\103R\CPort_D.dpk | tested |
+| C++ Builder 3 | .\Packages\CB3\DsgnCPortCB3.bpk | .\Packages\CB3\CPortLibCB3.bpk | not officially supported |
+| C++ Builder 4 | .\Packages\CB4\DsgnCPortCB4.bpk | .\Packages\CB4\CPortLibCB4.bpk | not officially supported |
+| C++ Builder 5 | .\Packages\CB5\DsgnCPortCB5.bpk | .\Packages\CB5\CPortLibCB5.bpk | not officially supported |
+| C++ Builder 6 | .\Packages\CB6\DsgnCPortCB6.bpk | .\Packages\CB6\CPortLibCB6.bpk | not officially supported |
 
 
 
