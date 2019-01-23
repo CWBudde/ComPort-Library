@@ -3,10 +3,10 @@
 			<ProjectGuid>{024BB75A-58DC-4110-80F5-D4283D06AA76}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
-			<Projects Include="..\Source\CPortLibDXE.dproj">
+			<Projects Include="..\Packages\XE\CPort_R.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="..\Source\DsgnCPortDXE.dproj">
+			<Projects Include="..\Packages\XE\CPort_D.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -17,32 +17,32 @@
 				<Default.Personality/>
 			</BorlandProject>
 		</ProjectExtensions>
-		<Target Name="CPortLibDXE">
-			<MSBuild Projects="..\Source\CPortLibDXE.dproj"/>
+		<Target Name="CPort_R">
+			<MSBuild Projects="..\Packages\XE\CPort_R.dproj"/>
 		</Target>
-		<Target Name="CPortLibDXE:Clean">
-			<MSBuild Projects="..\Source\CPortLibDXE.dproj" Targets="Clean"/>
+		<Target Name="CPort_R:Clean">
+			<MSBuild Projects="..\Packages\XE\CPort_R.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="CPortLibDXE:Make">
-			<MSBuild Projects="..\Source\CPortLibDXE.dproj" Targets="Make"/>
+		<Target Name="CPort_R:Make">
+			<MSBuild Projects="..\Packages\XE\CPort_R.dproj" Targets="Make"/>
 		</Target>
-		<Target Name="DsgnCPortDXE">
-			<MSBuild Projects="..\Source\DsgnCPortDXE.dproj"/>
+		<Target Name="CPort_D">
+			<MSBuild Projects="..\Packages\XE\CPort_D.dproj"/>
 		</Target>
-		<Target Name="DsgnCPortDXE:Clean">
-			<MSBuild Projects="..\Source\DsgnCPortDXE.dproj" Targets="Clean"/>
+		<Target Name="CPort_D:Clean">
+			<MSBuild Projects="..\Packages\XE\CPort_D.dproj" Targets="Clean"/>
 		</Target>
-		<Target Name="DsgnCPortDXE:Make">
-			<MSBuild Projects="..\Source\DsgnCPortDXE.dproj" Targets="Make"/>
+		<Target Name="CPort_D:Make">
+			<MSBuild Projects="..\Packages\XE\CPort_D.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="CPortLibDXE;DsgnCPortDXE"/>
+			<CallTarget Targets="CPort_R;CPort_D"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="CPortLibDXE:Clean;DsgnCPortDXE:Clean"/>
+			<CallTarget Targets="CPort_R:Clean;CPort_D:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="CPortLibDXE:Make;DsgnCPortDXE:Make"/>
+			<CallTarget Targets="CPort_R:Make;CPort_D:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
