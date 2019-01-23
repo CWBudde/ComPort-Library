@@ -38,10 +38,6 @@ type
     procedure ComPortRxChar(Sender: TObject; Count: Integer);
     procedure Bt_LoadClick(Sender: TObject);
     procedure Bt_StoreClick(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
@@ -66,7 +62,7 @@ end;
 
 procedure TForm1.Button_SendClick(Sender: TObject);
 var
-  Str: String;
+  Str: string;
 begin
   Str := Edit_Data.Text;
   if NewLine_CB.Checked then
@@ -96,12 +92,10 @@ end;
 procedure TForm1.Bt_LoadClick(Sender: TObject);
 begin
   ComPort.LoadSettings(stRegistry, 'HKEY_LOCAL_MACHINE\Software\Dejan');
-//  ComPort.LoadSettings(stIniFile, 'e:\Test.ini');
 end;
 
 procedure TForm1.Bt_StoreClick(Sender: TObject);
 begin
-//  ComPort.StoreSettings(stIniFile, 'e:\Test.ini');
   ComPort.StoreSettings(stRegistry, 'HKEY_LOCAL_MACHINE\Software\Dejan');
 end;
 

@@ -1,9 +1,9 @@
 object MainForm: TMainForm
   Left = 372
   Top = 256
-  Width = 977
-  Height = 549
   Caption = 'Mini Terminal'
+  ClientHeight = 522
+  ClientWidth = 969
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object Panel: TPanel
     Left = 0
-    Top = 483
+    Top = 490
     Width = 969
     Height = 32
     Align = alBottom
@@ -109,7 +109,7 @@ object MainForm: TMainForm
     Left = 0
     Top = 0
     Width = 969
-    Height = 464
+    Height = 471
     Align = alClient
     Color = clBlack
     ComPort = ComPort
@@ -126,7 +126,7 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 464
+    Top = 471
     Width = 969
     Height = 19
     Panels = <
