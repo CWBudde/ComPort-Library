@@ -379,7 +379,9 @@ type
     procedure LoadSettings(StoreType: TStoreType; LoadFrom: string);
     procedure Open;
     procedure Close;
-    {$IFNDEF No_Dialogs}procedure ShowSetupDialog;{$ENDIF}
+{$IFNDEF No_Dialogs}
+    procedure ShowSetupDialog;
+{$ENDIF}
     function InputCount: Integer;
     function OutputCount: Integer;
     function Signals: TComSignals;
@@ -615,8 +617,7 @@ const
 implementation
 
 uses
-  {$IFNDEF No_Dialogs}  CPortSetup, {$ENDIF}
-   Controls, Forms, WinSpool;
+  {$IFNDEF No_Dialogs} CPortSetup, {$ENDIF} Controls, Forms, WinSpool;
 
 var
   // error messages
@@ -729,12 +730,12 @@ begin
   inherited Create(false);
   FStopEvent := CreateEvent(nil, True, False, nil);
   FComPort := AComPort;
+
   // set thread priority
   Priority := FComPort.EventThreadPriority;
+
   // select which events are monitored
   SetCommMask(FComPort.Handle, EventsToInt(FComPort.Events));
-  // execute thread
-  //{$IFDEF Unicode}Start;  {$ELSE}  Resume;  {$ENDIF}
 end;
 
 // destroy thread
@@ -1445,13 +1446,9 @@ begin
     else
     begin
       if (FSyncMethod = smWindowSync) then
-{$IFDEF DELPHI_6_OR_HIGHER}
-  {$WARN SYMBOL_DEPRECATED OFF}
-{$ENDIF}
+{$WARN SYMBOL_DEPRECATED OFF}
         FWindow := AllocateHWnd(WindowMethod);
-{$IFDEF DELPHI_6_OR_HIGHER}
-  {$WARN SYMBOL_DEPRECATED ON}
-{$ENDIF}
+{$WARN SYMBOL_DEPRECATED ON}
       FEventThread := TComThread.Create(Self);
       FThreadCreated := True;
     end;
@@ -1475,13 +1472,9 @@ begin
       FEventThread.Free;
       FThreadCreated := False;
       if FSyncMethod = smWindowSync then
-{$IFDEF DELPHI_6_OR_HIGHER}
-  {$WARN SYMBOL_DEPRECATED OFF}
-{$ENDIF}
+{$WARN SYMBOL_DEPRECATED OFF}
         DeallocateHWnd(FWindow);
-{$IFDEF DELPHI_6_OR_HIGHER}
-  {$WARN SYMBOL_DEPRECATED ON}
-{$ENDIF}
+{$WARN SYMBOL_DEPRECATED ON}
     end;
     // close port
     DestroyHandle;
@@ -1849,14 +1842,15 @@ var
 begin
   if Length(Str) > 0 then
   begin
-    setlength(sa,length(str));
-    {$IFDEF Unicode}
-    if length(sa)>0 then
+    SetLength(sa, Length(str));
+{$IFDEF Unicode}
+    if Length(sa) > 0 then
     begin
-      for i := 1 to length(str) do sa[i] := ansichar(byte(str[i]));
-      move(sa[1],str[1],length(sa));
+      for i := 1 to Length(str) do
+        sa[i] := AnsiChar(Byte(str[i]));
+      move(sa[1], str[1], Length(sa));
     end;
-    {$ENDIF}
+{$ENDIF}
     Result := WriteAsync(Str[1], Length(Str), AsyncPtr)
   end
   else
@@ -1898,9 +1892,8 @@ var
 begin
   InitAsync(AsyncPtr);
   try
-    setLength(rb,count);
+    SetLength(rb,count);
     Result := ReadAsync(rb[1], Count, AsyncPtr);  //  ReadStr(s, Count);
-    //{$IFDEF Unicode}rb := UTF8Encode(s);{$ELSE} rb := s;  {$ENDIF}
     l := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), nil, 0);
     SetLength(Str, l);
     Result := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), PWideChar(Str), l);
@@ -1950,7 +1943,7 @@ end;
 // perform asynchronous read operation
 function TCustomComPort.ReadStrAsync(var Str: AnsiString; Count: Integer; var AsyncPtr: PAsync): Integer;
 begin
-  setlength(str,count);
+  SetLength(str,count);
   if Count > 0 then
     Result := ReadAsync(str[1], Count, AsyncPtr)
   else
@@ -1970,12 +1963,13 @@ begin
     Result := WaitForAsync(AsyncPtr);
     SetLength(sa, Result);
     SetLength(str, Result);
-    {$IFDEF Unicode}
-      if length(sa)>0 then
-      for i := 1 to length(sa) do str[i] := char(byte(sa[i]))
-    {$ELSE}
-      str := sa;
-    {$ENDIF}
+{$IFDEF Unicode}
+    if Length(sa) > 0 then
+      for i := 1 to Length(sa) do
+        str[i] := char(Byte(sa[i]))
+{$ELSE}
+    str := sa;
+{$ENDIF}
   finally
     DoneAsync(AsyncPtr);
   end;
@@ -2199,9 +2193,10 @@ end;
 function CharToStr(Ch: Char): string;
 begin
   {$IFDEF Unicode}
-  if CharInSet(ch,[#33..#127]) then
+  if CharInSet(ch, [#33..#127]) then
   {$ELSE}
-  if Ch in [#33..#127] then {$ENDIF}
+  if Ch in [#33..#127] then
+  {$ENDIF}
     Result := Ch
   else
     Result := '#' + IntToStr(Ord(Ch));
@@ -3283,9 +3278,12 @@ begin
   SetLength(Sa, Count);
   Move(Buffer, Sa[1], Count);
   {$IFDEF Unicode}
-  if length(sa)>0 then
-    for i := 1 to length(sa) do str[i] := char(byte(sa[i]));
-  {$ELSE}  str := sa;  {$ENDIF}
+  if Length(sa) > 0 then
+    for i := 1 to Length(sa) do
+      str[i] := Char(Byte(sa[i]));
+  {$ELSE}
+  str := sa;
+  {$ENDIF}
   AddData(Str);
 end;
 
@@ -3475,11 +3473,7 @@ begin
         KeyHandle,
         Index,
         PChar(ValueName),
-        {$IFDEF DELPHI_4_OR_HIGHER}
         Cardinal(ValueLen),
-        {$ELSE}
-        ValueLen,
-          {$ENDIF}
         nil,
         @ValueType,
         PByte(PChar(Data)),
