@@ -21,14 +21,14 @@ The master branch is focused on Delphi and all CBuilder support has been removed
 
 ## Package names
 
-| Delphi Version | Design-Time | Run-Time | State |
+| Delphi Version | Run-Time | Design-Time | State |
 |---|---|---|---|
-| Delphi 7 | .\Packages\D7\DsgnCPort7.dpk | .\Packages\D7\CPortLib7.dpk | not sufficiently tested |
-| Delphi 8 | .\Packages\D8\DsgnCPort8.dpk | .\Packages\D8\CPortLib8.dpk | not sufficiently tested |
-| Delphi 2005 | .\Packages\D2005\DsgnCPort2005.dpk | .\Packages\D2005\CPortLib2005.dpk | not sufficiently tested |
-| Delphi 2006 | .\Packages\D2006\DsgnCPort2006.dpk | .\Packages\D2006\CPortLib2006.dpk | not sufficiently tested |
-| Delphi 2007 | .\Packages\D2007\DsgnCPort2007.dpk | .\Packages\D2007\CPortLib2007.dpk | not sufficiently tested |
-| Delphi 2009 | .\Packages\D2009\DsgnCPort2009.dpk | .\Packages\D2009\CPortLib2009.dpk | not sufficiently tested |
+| Delphi 7 | .\Packages\D7\CPortLib7.dpk | .\Packages\D7\DsgnCPort7.dpk | not sufficiently tested |
+| Delphi 8 | .\Packages\D8\CPortLib8.dpk | .\Packages\D8\DsgnCPort8.dpk | not sufficiently tested |
+| Delphi 2005 | .\Packages\D2005\CPortLib2005.dpk | .\Packages\D2005\DsgnCPort2005.dpk | not sufficiently tested |
+| Delphi 2006 | .\Packages\D2006\CPortLib2006.dpk | .\Packages\D2006\DsgnCPort2006.dpk | not sufficiently tested |
+| Delphi 2007 | .\Packages\D2007\CPortLib2007.dpk | .\Packages\D2007\DsgnCPort2007.dpk | not sufficiently tested |
+| Delphi 2009 | .\Packages\D2009\CPort_R.dpk | .\Packages\D2009\CPort_D.dpk | not sufficiently tested |
 | Delphi 2010 | .\Packages\2010\CPort_R.dpk | .\Packages\2010\CPort_D.dpk | should work |
 | Delphi XE | .\Packages\XE\CPort_R.dpk | .\Packages\XE\CPort_D.dpk | should work |
 | Delphi XE2 | .\Packages\XE2\CPort_R.dpk | .\Packages\XE2\CPort_D.dpk | tested |
@@ -39,9 +39,9 @@ The master branch is focused on Delphi and all CBuilder support has been removed
 | Delphi XE7 | .\Packages\XE7\CPort_R.dpk | .\Packages\XE7\CPort_D.dpk | tested |
 | Delphi XE8 | .\Packages\XE8\CPort_R.dpk | .\Packages\XE8\CPort_D.dpk | should work |
 | Delphi RS 10 | .\Packages\10S\CPort_R.dpk | .\Packages\10S\CPort_D.dpk | should work |
-| Delphi RS 10.1 | .\Packages\101B\CPort_R.dpk | .\Packages\101B\CPort_D.dpk | tested |
+| Delphi RS 10.1 | .\Packages\101B\CPort_R.dpk | .\Packages\101B\CPort_D.dpk | should work |
 | Delphi RS 10.2 | .\Packages\102T\CPort_R.dpk | .\Packages\102T\CPort_D.dpk | tested |
-| Delphi RS 10.3 | .\Packages\103R\CPort_R.dpk | .\Packages\103R\CPort_D.dpk | tested |
+| Delphi RS 10.3 | .\Packages\103R\CPort_R.dpk | .\Packages\103R\CPort_D.dpk | should work |
 
 
 
