@@ -7,7 +7,7 @@ This library is a fork of the original ComPort Library 4.10, which can found her
 
 As it is a fork, some of the original commit messages are still accessible.
 
-The master branch is focused on Delphi and all CBuilder support has been removed. However, the old CBuilder code is still accessible in the [LegacyCBuilderSupport branch](../../../tree/LegacyCBuilderSupport/)
+The master branch is focused on Delphi and all CBuilder support has been removed. However, the old CBuilder code is still accessible in the [LegacyCBuilderSupport branch](../../tree/LegacyCBuilderSupport/)
 
 ## Requirements
 

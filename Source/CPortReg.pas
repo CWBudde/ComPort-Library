@@ -14,11 +14,7 @@ unit CPortReg;
 interface
 
 uses
-{$IFDEF DELPHI_6_OR_HIGHER}
   DesignIntf, DesignEditors, DesignMenus, PropertyCategories,
-{$ELSE}
-  DsgnIntf,
-{$ENDIF}
   Classes, Menus;
 
 type
@@ -28,9 +24,6 @@ type
     function GetVerb(Index: Integer): string; override;
     function GetVerbCount: Integer; override;
     procedure ExecuteVerb(Index: Integer); override;
-{$IFDEF DELPHI_5}
-    procedure PrepareItem(Index: Integer; const AItem: TMenuItem); override;
-{$ENDIF}
   end;
 
   // TComPort component editor
@@ -39,9 +32,6 @@ type
     procedure ExecuteVerb(Index: Integer); override;
     function GetVerb(Index: Integer): string; override;
     function GetVerbCount: Integer; override;
-{$IFDEF DELPHI_5}
-    procedure PrepareItem(Index: Integer; const AItem: TMenuItem); override;
-{$ENDIF}
     procedure Edit; override;
   end;
 
@@ -51,9 +41,6 @@ type
     procedure ExecuteVerb(Index: Integer); override;
     function GetVerb(Index: Integer): string; override;
     function GetVerbCount: Integer; override;
-{$IFDEF DELPHI_5}
-    procedure PrepareItem(Index: Integer; const AItem: TMenuItem); override;
-{$ENDIF}
     procedure Edit; override;
   end;
 
@@ -71,39 +58,6 @@ type
     procedure Edit; override;
     function GetAttributes: TPropertyAttributes; override;
   end;
-
-{$IFDEF DELPHI_5}
-  TComCat = class(TPropertyCategory)
-  public
-    class function Name: string; override;
-    class function Description: string; override;
-  end;
-
-  TComPacketCat = class(TPropertyCategory)
-  public
-    class function Name: string; override;
-    class function Description: string; override;
-  end;
-
-  TComAsciiSetupCat = class(TPropertyCategory)
-  public
-    class function Name: string; override;
-    class function Description: string; override;
-  end;
-
-  TComPacketEventsCat = class(TPropertyCategory)
-  public
-    class function Name: string; override;
-    class function Description: string; override;
-  end;
-
-  TComTerminalCat = class(TPropertyCategory)
-  public
-    class function Name: string; override;
-    class function Description: string; override;
-  end;
-
-{$ENDIF}
 
 procedure Register;
 
@@ -136,15 +90,6 @@ begin
   Result := 1;
 end;
 
-{$IFDEF DELPHI_5}
-procedure TComLibraryEditor.PrepareItem(Index: Integer;
-  const AItem: TMenuItem);
-begin
-  if Index = 0 then
-    AItem.Bitmap.LoadFromResourceName(HInstance, 'CPORTLIB');
-end;
-{$ENDIF}
-
 (*****************************************
  * TComPortEditor editor                 *
  *****************************************)
@@ -161,16 +106,6 @@ begin
   if Index = 1 then
     Edit;
 end;
-
-{$IFDEF DELPHI_5}
-procedure TComPortEditor.PrepareItem(Index: Integer;
-  const AItem: TMenuItem);
-begin
-  if Index = 1 then
-    AItem.Default := True;
-  inherited PrepareItem(Index, AItem);
-end;
-{$ENDIF}
 
 function TComPortEditor.GetVerb(Index: Integer): string;
 begin
@@ -200,16 +135,6 @@ begin
   if Index = 1 then
     Edit;
 end;
-
-{$IFDEF DELPHI_5}
-procedure TComTerminalEditor.PrepareItem(Index: Integer;
-  const AItem: TMenuItem);
-begin
-  if Index = 1 then
-    AItem.Default := True;
-  inherited PrepareItem(Index, AItem);
-end;
-{$ENDIF}
 
 function TComTerminalEditor.GetVerb(Index: Integer): string;
 begin
@@ -267,80 +192,6 @@ begin
   Result := [paMultiSelect, paSubProperties, paDialog, paReadOnly];
 end;
 
-{$IFDEF DELPHI_5}
-
-(*****************************************
- * TComCategory property category        *
- *****************************************)
-
-class function TComCat.Description: string;
-begin
-  Result := 'Serial communication settings';
-end;
-
-class function TComCat.Name: string;
-begin
-  Result := 'Serial Communication';
-end;
-
-(*****************************************
- * TComCategoryCat property category     *
- *****************************************)
-
-class function TComPacketCat.Description: string;
-begin
-  Result := 'Setup packet properties';
-end;
-
-class function TComPacketCat.Name: string;
-begin
-  Result := 'Packet setup';
-end;
-
-(*****************************************
- * TComAsciiSetupCat property category   *
- *****************************************)
-
-class function TComAsciiSetupCat.Description: string;
-begin
-  Result := 'Setup ASCII recieving and sending';
-end;
-
-class function TComAsciiSetupCat.Name: string;
-begin
-  Result := 'ASCII Setup';
-end;
-
-(*****************************************
- * TComPacketEventsCat property category *
- *****************************************)
-
-class function TComPacketEventsCat.Description: string;
-begin
-  Result := 'Packet events';
-end;
-
-class function TComPacketEventsCat.Name: string;
-begin
-  Result := 'Packet';
-end;
-
-(*****************************************
- * TComTerminalCat property category     *
- *****************************************)
-
-class function TComTerminalCat.Description: string;
-begin
-  Result := 'Setup terminal settings';
-end;
-
-class function TComTerminalCat.Name: string;
-begin
-  Result := 'Terminal Setup';
-end;
-
-{$ENDIF}
-
 procedure Register;
 begin
   RegisterComponents('CPortLib', [TComPort, TComDataPacket,
@@ -353,25 +204,6 @@ begin
   RegisterComponentEditor(TComComboBox, TComLibraryEditor);
   RegisterPropertyEditor(TypeInfo(TPort), TCustomComPort, 'Port', TComPortProperty);
   RegisterPropertyEditor(TypeInfo(TFont), TCustomComTerminal, 'Font', TComFontProperty);
-{$IFDEF DELPHI_5}
-  RegisterPropertiesInCategory(TComCat, TComPort, ['BaudRate', 'StopBits',
-    'DataBits', 'Port', 'EventChar', 'Connected', 'DiscardNull', 'Events',
-    'FlowControl', 'Timeouts', 'Parity', 'Buffer', 'OnAfterOpen', 'OnBeforeOpen',
-    'OnAfterClose', 'OnBeforeClose', 'OnRxChar', 'OnTxEmpty', 'OnCTSChange',
-    'OnRLSDChange', 'OnDSRChange', 'OnError', 'OnRing', 'OnRxBuf', 'OnRxFlag',
-    'OnRx80Full', 'OnBreak']);
-  RegisterPropertiesInCategory(TComPacketCat, TComDataPacket, ['CaseInsensitive',
-    'IncludeStrings', 'MaxBufferSize', 'Size', 'StartString', 'StopString']);
-  RegisterPropertiesInCategory(TComAsciiSetupCat, TComTerminal, ['AppendLF',
-    'SendLF', 'Force7Bit', 'WrapLines', 'LocalEcho']);
-  RegisterPropertiesInCategory(TComPacketEventsCat, TComDataPacket,
-    ['OnPacket', 'OnDiscard']);
-  RegisterPropertiesInCategory(TComTerminalCat, TComTerminal,
-    ['Columns', 'Rows', 'Emulation', 'Caret', 'Connected', 'Font', 'ArrowKeys',
-    'OnGetEscapeCodes', 'OnUnhandledCode', 'OnStrRecieved']);
-  RegisterPropertiesInCategory(TVisualCategory, TComLed, ['Kind']);
-{$ENDIF}
-{$IFDEF DELPHI_6_OR_HIGHER}
   RegisterPropertiesInCategory('Serial communication', TComPort, ['BaudRate', 'StopBits',
     'DataBits', 'Port', 'EventChar', 'Connected', 'DiscardNull', 'Events',
     'FlowControl', 'Timeouts', 'Parity', 'Buffer', 'OnAfterOpen', 'OnBeforeOpen',
@@ -387,7 +219,6 @@ begin
   RegisterPropertiesInCategory('Terminal setup', TComTerminal,
     ['Columns', 'Rows', 'Emulation', 'Caret', 'Connected', 'Font', 'ArrowKeys',
     'OnGetEscapeCodes', 'OnUnhandledCode', 'OnStrRecieved']);
-{$ENDIF}
 end;
 
 end.
