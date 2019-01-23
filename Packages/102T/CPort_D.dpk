@@ -1,6 +1,5 @@
 package CPort_D;
 
-{$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -25,7 +24,8 @@ package CPort_D;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'ComPort Library Delphi XE'}
+{$DESCRIPTION 'ComPort Library'}
+{$LIBSUFFIX '102T'}
 {$DESIGNONLY}
 {$IMPLICITBUILD OFF}
 

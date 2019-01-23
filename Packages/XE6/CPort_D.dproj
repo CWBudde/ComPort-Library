@@ -49,7 +49,7 @@
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <GenPackage>true</GenPackage>
         <DesignOnlyPackage>true</DesignOnlyPackage>
-        <DCC_Description>ComPort Library</DCC_Description>
+        <DCC_Description>ComPort Library Delphi XE</DCC_Description>
         <DCC_ImageBase>00400000</DCC_ImageBase>
         <DCC_S>false</DCC_S>
         <DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>

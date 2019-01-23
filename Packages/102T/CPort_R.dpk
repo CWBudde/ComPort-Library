@@ -1,6 +1,5 @@
 package CPort_R;
 
-{$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -26,13 +25,13 @@ package CPort_R;
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'ComPort Library'}
+{$LIBSUFFIX '102T'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
   vcl,
-  rtl,
-  vclx;
+  rtl;
 
 contains
   CPort in '..\..\Source\CPort.pas',
