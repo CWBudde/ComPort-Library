@@ -1,4 +1,5 @@
 program ModTest;
+
 {$APPTYPE CONSOLE}
 
 uses
