@@ -24,7 +24,6 @@
   splitsing between linefeed and newpage
 }
 unit CPortCtl;
-
 {$Warnings OFF}
 {$I CPort.inc}
 
@@ -116,12 +115,14 @@ type
     property TabOrder;
     property TabStop;
     property Visible;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property Anchors;
     property BiDiMode;
     property CharCase;
     property Constraints;
     property DragKind;
     property ParentBiDiMode;
+{$ENDIF}
     property OnChange;
     property OnClick;
     property OnDblClick;
@@ -137,9 +138,13 @@ type
     property OnKeyUp;
     property OnMeasureItem;
     property OnStartDrag;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property OnEndDock;
     property OnStartDock;
+{$ENDIF}
+{$IFDEF DELPHI_5_OR_HIGHER}
     property OnContextPopup;
+{$ENDIF}
   end;
 
   // radio group control for selecting port properties
@@ -183,12 +188,14 @@ type
     property TabOrder;
     property TabStop;
     property Visible;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property Anchors;
     property BiDiMode;
     property Constraints;
     property DockSite;
     property DragKind;
     property ParentBiDiMode;
+{$ENDIF}
     property OnClick;
     property OnDblClick;
     property OnDragDrop;
@@ -200,13 +207,17 @@ type
     property OnMouseMove;
     property OnMouseUp;
     property OnMouseDown;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property OnEndDock;
     property OnStartDock;
     property OnGetSiteInfo;
     property OnDockDrop;
     property OnDockOver;
     property OnUnDock;
+{$ENDIF}
+{$IFDEF DELPHI_5_OR_HIGHER}
     property OnContextPopup;
+{$ENDIF}
   end;
 
   // property types
@@ -274,10 +285,12 @@ type
     property PopupMenu;
     property ShowHint;
     property Visible;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property Anchors;
     property Constraints;
     property DragKind;
     property ParentBiDiMode;
+{$ENDIF}
     property OnChange: TLedStateEvent read FOnChange write FOnChange;
     property OnClick;
     property OnDblClick;
@@ -288,10 +301,14 @@ type
     property OnMouseMove;
     property OnMouseUp;
     property OnStartDrag;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property OnEndDock;
     property OnResize;
     property OnStartDock;
+{$ENDIF}
+{$IFDEF DELPHI_5_OR_HIGHER}
     property OnContextPopup;
+{$ENDIF}
   end;
 
   TCustomComTerminal = class;  // forward declaration
@@ -436,7 +453,9 @@ type
     procedure WMSetFocus(var Message: TWMSetFocus); message WM_SETFOCUS;
     procedure WMSize(var Msg: TWMSize); message WM_SIZE;
     procedure WMVScroll(var Message: TWMVScroll); message WM_VSCROLL;
+{$IFDEF DELPHI_4_OR_HIGHER}
     function CanAutoSize(var NewWidth, NewHeight: Integer): Boolean; override;
+{$ENDIF}
     procedure CreateParams(var Params: TCreateParams); override;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure KeyPress(var Key: Char); override;
@@ -523,10 +542,12 @@ type
     property Visible;
     property WantTab;
     property WrapLines;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property Anchors;
     property AutoSize;
     property Constraints;
     property DragKind;
+{$ENDIF}
     property OnChar;
     property OnClick;
     property OnDblClick;
@@ -545,6 +566,7 @@ type
     property OnStartDrag;
     property OnStrRecieved;
     property OnUnhandledCode;
+{$IFDEF DELPHI_4_OR_HIGHER}
     property OnCanResize;
     property OnConstrainedResize;
     property OnDockDrop;
@@ -555,7 +577,10 @@ type
     property OnResize;
     property OnStartDock;
     property OnUnDock;
+{$ENDIF}
+{$IFDEF DELPHI_5_OR_HIGHER}
     property OnContextPopup;
+{$ENDIF}
   end;
 
 var
@@ -566,7 +591,7 @@ implementation
 {$R CPortImg.res}
 
 uses
-  SysUtils, Dialogs, CPortTrmSet;
+  SysUtils, Types, Dialogs, CPortTrmSet;
 
 (*****************************************
  * auxilary functions                    *
@@ -1320,9 +1345,11 @@ begin
     Bottom := Min(FOwner.ClientHeight, FOwner.Rows * FOwner.FFontHeight);
   end;
   // scroll on screen
+{$IFDEF DELPHI_4_OR_HIGHER}
   if FOwner.DoubleBuffered then
     FOwner.Invalidate
   else
+{$ENDIF}
     ScrollWindowEx(FOwner.Handle, 0, -FOwner.FFontHeight,
       @ScrollRect, nil, 0, nil, SW_INVALIDATE or SW_ERASE);
 end;
@@ -1348,9 +1375,11 @@ begin
     Bottom := Min(FOwner.ClientHeight, FOwner.Rows * FOwner.FFontHeight);
   end;
   // scroll on screen
+{$IFDEF DELPHI_4_OR_HIGHER}
   if FOwner.DoubleBuffered then
     FOwner.Invalidate
   else
+{$ENDIF}
     ScrollWindowEx(FOwner.Handle, 0, FOwner.FFontHeight,
       @ScrollRect, nil, 0, nil, SW_INVALIDATE or SW_ERASE);
 end;
@@ -1367,9 +1396,11 @@ begin
     ((Row - 1) * FOwner.Columns + Column - 1) * SizeOf(TComTermChar));
   FillChar(SourceAddr^, BytesToDelete, 0);
   // on screen
+{$IFDEF DELPHI_4_OR_HIGHER}
   if FOwner.DoubleBuffered then
     FOwner.Invalidate
   else
+{$ENDIF}
     FOwner.InvalidatePortion(Rect(Column, Row, FOwner.Columns, Row));
 end;
 
@@ -1386,9 +1417,11 @@ begin
     ((Row - 1) * FOwner.Columns + Column - 1) * SizeOf(TComTermChar));
   FillChar(SourceAddr^, BytesToDelete, 0);
   // on screen
+{$IFDEF DELPHI_4_OR_HIGHER}
   if FOwner.DoubleBuffered then
     FOwner.Invalidate
   else
+{$ENDIF}
     FOwner.InvalidatePortion(Rect(Column, Row, FOwner.Columns, FOwner.Rows))
 end;
 
@@ -1666,7 +1699,9 @@ begin
     Font.Name := ComTerminalFont.Name;
   if fsUnderline in Font.Style then
     Font.Style := Font.Style - [fsUnderline];
+{$IFDEF DELPHI_4_OR_HIGHER}
   AdjustSize;
+{$ENDIF}
   UpdateScrollRange;
 end;
 
@@ -1730,6 +1765,7 @@ begin
   ModifyScrollBar(SB_VERT, Message.ScrollCode, Message.Pos);
 end;
 
+{$IFDEF DELPHI_4_OR_HIGHER}
 // set size to fit whole terminal screen
 function TCustomComTerminal.CanAutoSize(var NewWidth,
   NewHeight: Integer): Boolean;
@@ -1762,6 +1798,7 @@ begin
     end;
   end;
 end;
+{$ENDIF}
 
 // set control parameters
 procedure TCustomComTerminal.CreateParams(var Params: TCreateParams);
@@ -2109,9 +2146,11 @@ begin
     Dx := 0;
     Dy := (OldPos - APos) * FFontHeight;
   end;
+{$IFDEF DELPHI_4_OR_HIGHER}
   if DoubleBuffered then
     Invalidate
   else
+{$ENDIF}
     ScrollWindowEx(Handle, Dx, Dy, nil, nil, 0, nil, SW_ERASE or SW_INVALIDATE);
 end;
 
@@ -2502,10 +2541,10 @@ begin
   FSaveAttr := FTermAttr;
 end;
 
-procedure TCustomComTerminal.RxBuf(Sender: TObject; const Buffer; Count: Integer);
+procedure TCustomComTerminal.RxBuf(Sender: TObject; const Buffer;  Count: Integer);
 var
   Str: String;
-  sa: AnsiString;
+  sa : Ansistring;
 
   // append line feeds to carriage return
   procedure AppendLineFeeds;
@@ -2589,7 +2628,9 @@ begin
   if Value <> FColumns then
   begin
     FColumns := Min(Max(2, Value), 256);
+{$IFDEF DELPHI_4_OR_HIGHER}
     AdjustSize;
+{$ENDIF}
     UpdateScrollRange;
     if not ((csLoading in ComponentState) or (csDesigning in ComponentState)) then
     begin
@@ -2604,7 +2645,9 @@ begin
   if Value <> FRows then
   begin
     FRows := Min(Max(2, Value), 100);
+{$IFDEF DELPHI_4_OR_HIGHER}
     AdjustSize;
+{$ENDIF}
     UpdateScrollRange;
     if not ((csLoading in ComponentState) or (csDesigning in ComponentState)) then
     begin

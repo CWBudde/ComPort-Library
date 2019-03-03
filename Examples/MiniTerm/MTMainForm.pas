@@ -16,25 +16,25 @@ type
     TermButton: TButton;
     FontButton: TButton;
     TerminalReady: TComLed;
-    Label1: TLabel;
-    Label2: TLabel;
+    LabelTerminalReady: TLabel;
+    LabelCarrierDetected: TLabel;
     ComLed1: TComLed;
-    PopupMenu1: TPopupMenu;
-    Copy1: TMenuItem;
-    Paste1: TMenuItem;
-    Button1: TButton;
+    PopupMenu: TPopupMenu;
+    MenuItemCopy: TMenuItem;
+    MenuItemPaste: TMenuItem;
+    ButtonComCheck: TButton;
     ComDataPacket1: TComDataPacket;
-    StatusBar1: TStatusBar;
+    StatusBar: TStatusBar;
     procedure ConnButtonClick(Sender: TObject);
     procedure ComPortAfterOpen(Sender: TObject);
     procedure ComPortAfterClose(Sender: TObject);
     procedure PortButtonClick(Sender: TObject);
     procedure TermButtonClick(Sender: TObject);
     procedure FontButtonClick(Sender: TObject);
-    procedure Paste1Click(Sender: TObject);
+    procedure MenuItemPasteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure Button1Click(Sender: TObject);
+    procedure ButtonComCheckClick(Sender: TObject);
     procedure ComDataPacket1Packet(Sender: TObject; const Str: string);
     procedure ComDataPacket1CustomStart(Sender: TObject; const Str: string;
       var Pos: Integer);
@@ -71,19 +71,19 @@ procedure TMainForm.ComDataPacket1CustomStart(Sender: TObject;
   const Str: string; var Pos: Integer);
 begin
   if pos >= 0 then
-    StatusBar1.Panels[1].Text := 'Start @' + IntToSTr(pos);
+    StatusBar.Panels[1].Text := 'Start @' + IntToSTr(pos);
 end;
 
 procedure TMainForm.ComDataPacket1CustomStop(Sender: TObject;
   const Str: string; var Pos: Integer);
 begin
   if Pos >=0 then
-    StatusBar1.Panels[2].Text := 'Stop @' + IntToSTr(pos);
+    StatusBar.Panels[2].Text := 'Stop @' + IntToSTr(pos);
 end;
 
 procedure TMainForm.ComDataPacket1Packet(Sender: TObject; const Str: string);
 begin
-  StatusBar1.Panels[0].Text := 'FOUND: ' + str +  '                                  ';
+  StatusBar.Panels[0].Text := 'FOUND: ' + str +  '                                  ';
   ComDataPacket1.ResetBuffer;
 end;
 
@@ -92,11 +92,11 @@ begin
   ConnButton.Caption := 'Connect';
 end;
 
-procedure TMainForm.Paste1Click(Sender: TObject);
+procedure TMainForm.MenuItemPasteClick(Sender: TObject);
 var
   s: string;
 begin
-  s  := Clipboard.AsText;
+  s := Clipboard.AsText;
   ComPort.WriteStr(s);
 end;
 
@@ -140,7 +140,7 @@ begin
   end;
 end;
 
-procedure TMainForm.Button1Click(Sender: TObject);
+procedure TMainForm.ButtonComCheckClick(Sender: TObject);
 var
   s: string;
 begin

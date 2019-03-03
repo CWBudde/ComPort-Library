@@ -23,7 +23,7 @@ object MainForm: TMainForm
     Height = 32
     Align = alBottom
     BevelOuter = bvNone
-    PopupMenu = PopupMenu1
+    PopupMenu = PopupMenu
     TabOrder = 1
     object TerminalReady: TComLed
       Left = 8
@@ -35,14 +35,14 @@ object MainForm: TMainForm
       Kind = lkRedLight
       RingDuration = 0
     end
-    object Label1: TLabel
+    object LabelTerminalReady: TLabel
       Left = 33
       Top = 10
       Width = 69
       Height = 13
       Caption = 'Terminal ready'
     end
-    object Label2: TLabel
+    object LabelCarrierDetected: TLabel
       Left = 174
       Top = 10
       Width = 75
@@ -95,14 +95,14 @@ object MainForm: TMainForm
       TabOrder = 3
       OnClick = FontButtonClick
     end
-    object Button1: TButton
+    object ButtonComCheck: TButton
       Left = 756
-      Top = 2
+      Top = 4
       Width = 153
       Height = 25
       Caption = 'Direct COM Check'
       TabOrder = 4
-      OnClick = Button1Click
+      OnClick = ButtonComCheckClick
     end
   end
   object ComTerminal: TComTerminal
@@ -119,12 +119,12 @@ object MainForm: TMainForm
     Font.Height = -16
     Font.Name = 'Terminal'
     Font.Style = []
-    PopupMenu = PopupMenu1
+    PopupMenu = PopupMenu
     ScrollBars = ssBoth
     TabOrder = 0
     Caret = tcUnderline
   end
-  object StatusBar1: TStatusBar
+  object StatusBar: TStatusBar
     Left = 0
     Top = 471
     Width = 969
@@ -164,15 +164,15 @@ object MainForm: TMainForm
     Left = 203
     Top = 222
   end
-  object PopupMenu1: TPopupMenu
+  object PopupMenu: TPopupMenu
     Left = 204
     Top = 168
-    object Copy1: TMenuItem
+    object MenuItemCopy: TMenuItem
       Caption = 'Copy'
     end
-    object Paste1: TMenuItem
+    object MenuItemPaste: TMenuItem
       Caption = 'Paste'
-      OnClick = Paste1Click
+      OnClick = MenuItemPasteClick
     end
   end
   object ComDataPacket1: TComDataPacket
@@ -185,7 +185,7 @@ object MainForm: TMainForm
     OnPacket = ComDataPacket1Packet
     OnCustomStart = ComDataPacket1CustomStart
     OnCustomStop = ComDataPacket1CustomStop
-    Left = 192
-    Top = 296
+    Left = 200
+    Top = 280
   end
 end
