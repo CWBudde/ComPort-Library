@@ -11,27 +11,30 @@
  *     Made unicode ready                             *
  *****************************************************)
 
-{Met wijziging door mij aangebracht, zie:
+{
+With changes made by me, see:
 - TAdvanceCaret
   acPage: clear screen added
 - procedure TCustomComTerminal.AdvanceCaret(Kind: TAdvanceCaret);
-  commando newpage toegevoegd
+  commando newpage added
 - procedure TCustomComTerminal.SetAttributes(AParams: TStrings);
   30 ... 49 for foreground and background colors
 - function TCustomComTerminal.GetCharAttr: TComTermChar;
   Colorchanging made possible
 - procedure TCustomComTerminal.PutChar(Ch: Char);
-  splitsing between linefeed and newpage
+  splitting between linefeed and newpage
 }
+
 unit CPortCtl;
+
 {$Warnings OFF}
 {$I CPort.inc}
 
 interface
 
 uses
-  Classes, Controls, StdCtrls, ExtCtrls, Forms,
-  Messages, Graphics, Windows, CPort, CPortEsc;
+  Classes, Controls, StdCtrls, ExtCtrls, Forms, Messages, Graphics, Windows,
+  CPort, CPortEsc;
 
 type
   // property types
@@ -591,7 +594,7 @@ implementation
 {$R CPortImg.res}
 
 uses
-  SysUtils, Types, Dialogs, CPortTrmSet;
+  SysUtils, Types, UITypes, Dialogs, CPortTrmSet;
 
 (*****************************************
  * auxilary functions                    *
@@ -1694,6 +1697,7 @@ end;
 procedure TCustomComTerminal.CMFontChanged(var Message: TMessage);
 begin
   inherited;
+
   FTermAttr.FrontColor := Font.Color;
   if not CalculateMetrics then
     Font.Name := ComTerminalFont.Name;

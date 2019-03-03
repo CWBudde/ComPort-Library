@@ -11,7 +11,6 @@
  *     Made unicode ready                             *
  *****************************************************)
 
-
 unit CPort;
 
 {$Warnings OFF}
