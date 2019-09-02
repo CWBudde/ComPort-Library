@@ -114,10 +114,6 @@ type
   end;
   PAsync = ^TAsync;
 
-  {$IFNDEF Unicode}
-  UnicodeString = Widestring;
-  {$ENDIF}
-
   // TComPort component and asistant classes
   TCustomComPort = class; // forward declaration
 
