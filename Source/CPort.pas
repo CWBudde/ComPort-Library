@@ -15,7 +15,7 @@ unit CPort;
 
 {$Warnings OFF}
 {$I CPort.inc}
-{.$DEFINE No_Dialogs} //removes forms setup/config code
+{$DEFINE No_Dialogs} //removes forms setup/config code
 
 interface
 
