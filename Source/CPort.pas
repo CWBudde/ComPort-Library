@@ -421,21 +421,16 @@ type
     function LastErrors: TComErrors;
 
     function Write(const Buffer; Count: Integer): Integer;
-    function WriteStr(Str: string): Integer;
-    function WriteAnsiStr(Str: AnsiString): Integer;
-    function WriteUnicodeString(const Str: Unicodestring): Integer;
+    function WriteStr(const Data: RawByteString): Integer;
 
     function WriteAsync(const Buffer; Count: Integer; var AsyncPtr: PAsync): Integer;
-    function WriteStrAsync(var Str: string; var AsyncPtr: PAsync): Integer;
-    function WriteAnsiStrAsync(var Str: AnsiString; var AsyncPtr: PAsync): Integer;
+    function WriteStrAsync(const Data: RawByteString; var AsyncPtr: PAsync): Integer;
 
     function Read(var Buffer; Count: Integer): Integer;
-    function ReadStr(var Str: string; Count: Integer): Integer;
-    function ReadAnsiStr(var Str: AnsiString; Count: Integer): Integer;
-    function ReadUnicodeString(var Str: UnicodeString; Count: Integer): Integer;
+    function ReadStr(var Data: RawByteString; Count: Integer): Integer;
 
     function ReadAsync(var Buffer; Count: Integer; var AsyncPtr: PAsync): Integer;
-    function ReadStrAsync(var Str: AnsiString; Count: Integer; var AsyncPtr: PAsync): Integer;
+    function ReadStrAsync(var Data: RawByteString; Count: Integer; var AsyncPtr: PAsync): Integer;
 
     function WaitForAsync(var AsyncPtr: PAsync): Integer;
     function IsAsyncCompleted(AsyncPtr: PAsync): Boolean;
@@ -1896,6 +1891,15 @@ begin
   Result := BytesTrans;
 end;
 
+// perform asynchronous write operation
+function TCustomComPort.WriteStrAsync(const Data: RawByteString; var AsyncPtr: PAsync): Integer;
+begin
+  if Length(Data) > 0 then
+    Result := WriteAsync(Data[1], Length(Data), AsyncPtr)
+  else
+    Result := 0;
+end;
+
 // perform synchronous write operation
 function TCustomComPort.Write(const Buffer; Count: Integer): Integer;
 var
@@ -1910,93 +1914,15 @@ begin
   end;
 end;
 
-// perform asynchronous write operation
-function TCustomComPort.WriteStrAsync(var Str: string; var AsyncPtr: PAsync): Integer;
-var
-  sa: AnsiString;
-  i: Integer;
-begin
-  if Length(Str) > 0 then
-  begin
-    SetLength(sa, Length(Str));
-    {$IFDEF Unicode}
-    if Length(sa) > 0 then
-    begin
-      for i := 1 to Length(Str) do
-        sa[i] := AnsiChar(Byte(Str[i]));
-      Move(sa[1], Str[1], Length(sa));
-    end;
-    {$ENDIF}
-    Result := WriteAsync(Str[1], Length(Str), AsyncPtr)
-  end
-  else
-    Result := 0;
-end;
-
-function TCustomComPort.WriteAnsiStrAsync(var Str: AnsiString;
-  var AsyncPtr: PAsync): Integer;
-begin
-  if Length(Str) > 0 then
-    Result := WriteAsync(Str[1], Length(Str), AsyncPtr)
-  else
-    Result := 0;
-end;
-
 // perform synchronous write operation
-function TCustomComPort.WriteStr(Str: string): Integer;
+function TCustomComPort.WriteStr(const Data: RawByteString): Integer;
 var
   AsyncPtr: PAsync;
 begin
   InitAsync(AsyncPtr);
   try
-    WriteStrAsync(Str, AsyncPtr);
+    WriteStrAsync(Data, AsyncPtr);
     Result := WaitForAsync(AsyncPtr);
-  finally
-    DoneAsync(AsyncPtr);
-  end;
-end;
-
-// perform synchronous write operation
-function TCustomComPort.WriteAnsiStr(Str: AnsiString): Integer;
-var
-  AsyncPtr: PAsync;
-begin
-  InitAsync(AsyncPtr);
-  try
-    WriteAnsiStrAsync(Str, AsyncPtr);
-    Result := WaitForAsync(AsyncPtr);
-  finally
-    DoneAsync(AsyncPtr);
-  end;
-end;
-
-//Pierre Yager - includes codepage converstion of strings being sent
-function TCustomComPort.WriteUnicodeString(const Str: Unicodestring): Integer;
-var
-  l: Integer;
-  rb: AnsiString;
-begin
-  l := WideCharToMultiByte(FCodePage, 0, PWideChar(Str), Length(Str), nil, 0, nil, nil);
-  SetLength(rb, l);
-  WideCharToMultiByte(FCodePage, 0, PWideChar(Str), Length(Str), PAnsiChar(rb), l, nil, nil);
-  Result := WriteStr(string(rb));
-end;
-
-//Pierre Yager - includes codepage converstion of strings received
-function TCustomComPort.ReadUnicodeString(var Str: UnicodeString; Count: Integer): Integer;
-var
-  rb: AnsiString;
-  l: Integer;
-  AsyncPtr: PAsync;
-begin
-  InitAsync(AsyncPtr);
-  try
-    SetLength(rb,count);
-    Result := ReadAsync(rb[1], Count, AsyncPtr);  //  ReadStr(s, Count);
-    //{$IFDEF Unicode}rb := UTF8Encode(s);{$ELSE} rb := s;  {$ENDIF}
-    l := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), nil, 0);
-    SetLength(Str, l);
-    Result := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), PWideChar(Str), l);
   finally
     DoneAsync(AsyncPtr);
   end;
@@ -2026,6 +1952,17 @@ begin
   Result := BytesTrans;
 end;
 
+// perform asynchronous read operation
+function TCustomComPort.ReadStrAsync(var Data: RawByteString; Count: Integer;
+  var AsyncPtr: PAsync): Integer;
+begin
+  SetLength(Data, Count);
+  if Count > 0 then
+    Result := ReadAsync(Data[1], Count, AsyncPtr)
+  else
+    Result := 0;
+end;
+
 // perform synchronous read operation
 function TCustomComPort.Read(var Buffer; Count: Integer): Integer;
 var
@@ -2040,48 +1977,14 @@ begin
   end;
 end;
 
-// perform asynchronous read operation
-function TCustomComPort.ReadStrAsync(var Str: AnsiString; Count: Integer; var AsyncPtr: PAsync): Integer;
-begin
-  SetLength(Str,count);
-  if Count > 0 then
-    Result := ReadAsync(Str[1], Count, AsyncPtr)
-  else
-    Result := 0;
-end;
-
-// perform synchronous read operation
-function TCustomComPort.ReadStr(var Str: string; Count: Integer): Integer;
-var
-  AsyncPtr: PAsync;
-  sa: AnsiString;
-  i: Integer;
-begin
-  InitAsync(AsyncPtr);
-  try
-    ReadStrAsync(sa, Count, AsyncPtr);
-    Result := WaitForAsync(AsyncPtr);
-    SetLength(sa, Result);
-    SetLength(Str, Result);
-    {$IFDEF Unicode}
-    if Length(sa) > 0 then
-      for i := 1 to Length(sa) do Str[i] := char(Byte(sa[i]))
-    {$ELSE}
-        Str := sa;
-    {$ENDIF}
-  finally
-    DoneAsync(AsyncPtr);
-  end;
-end;
-
-function TCustomComPort.ReadAnsiStr(var Str: AnsiString;
+function TCustomComPort.ReadStr(var Data: RawByteString;
   Count: Integer): Integer;
 var
   AsyncPtr: PAsync;
 begin
   InitAsync(AsyncPtr);
   try
-    ReadStrAsync(Str, Count, AsyncPtr);
+    ReadStrAsync(Data, Count, AsyncPtr);
     Result := WaitForAsync(AsyncPtr);
   finally
     DoneAsync(AsyncPtr);
