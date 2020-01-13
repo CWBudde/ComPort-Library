@@ -307,6 +307,7 @@ type
     FStopBits: TStopBits;
     FDataBits: TDataBits;
     FDiscardNull: Boolean;
+    FEofChar: Char;
     FEventChar: Char;
     FEvents: TComEvents;
     FBuffer: TComBuffer;
@@ -369,6 +370,7 @@ type
     procedure CallRLSDChange;
     procedure CallRx80Full;
     procedure CallException(AnException: Word; const WinError: Int64 =0);
+    procedure SetEofChar(const Value: Char);
   protected
     procedure Loaded; override;
     procedure DoAfterClose; dynamic;
@@ -457,6 +459,7 @@ type
     property StopBits: TStopBits read FStopBits write SetStopBits;
     property DataBits: TDataBits read FDataBits write SetDataBits;
     property DiscardNull: Boolean read FDiscardNull write SetDiscardNull default False;
+    property EofChar: Char read FEofChar write SetEofChar default #0;
     property EventChar: Char read FEventChar write SetEventChar default #0;
     property Events: TComEvents read FEvents write FEvents;
     property Buffer: TComBuffer read FBuffer write SetBuffer;
@@ -493,6 +496,7 @@ type
     property StopBits;
     property DataBits;
     property DiscardNull;
+    property EofChar;
     property EventChar;
     property Events;
     property Buffer;
@@ -656,7 +660,7 @@ const
 implementation
 
 uses
-  {$IFNDEF No_Dialogs} CPortSetup, {$ENDIF} Controls, Forms, WinSpool;
+  {$IFNDEF No_Dialogs} CPortSetup, {$ENDIF} Controls, Forms, Types, WinSpool;
 
 var
   // error messages
@@ -1593,6 +1597,7 @@ begin
     DCB.DCBlength := SizeOf(TDCB);
     DCB.XonLim := FBuffer.InputSize div 4;
     DCB.XoffLim := DCB.XonLim;
+    DCB.EofChar := AnsiChar(FEofChar);
     DCB.EvtChar := AnsiChar(FEventChar);
 
     DCB.Flags := dcb_Binary;
@@ -1880,12 +1885,14 @@ begin
   if AsyncPtr = nil then
     //raise EComPort.CreateNoWinCode
     CallException(CError_InvalidAsync);
+
   if FHandle = INVALID_HANDLE_VALUE then
     //raise EComPort.Create
     CallException(CError_PortNotOpen, -24);
+
   PrepareAsync(okWrite, Buffer, Count, AsyncPtr);
 
-  Success := WriteFile(FHandle, Buffer, Count, BytesTrans, @AsyncPtr^.Overlapped)
+  Success := WriteFile(FHandle, Buffer, Count, BytesTrans, @(AsyncPtr^.Overlapped))
     or (GetLastError = ERROR_IO_PENDING);
 
   if not Success then
@@ -1991,9 +1998,8 @@ var
 begin
   InitAsync(AsyncPtr);
   try
-    SetLength(rb,count);
-    Result := ReadAsync(rb[1], Count, AsyncPtr);  //  ReadStr(s, Count);
-    //{$IFDEF Unicode}rb := UTF8Encode(s);{$ELSE} rb := s;  {$ENDIF}
+    SetLength(rb, Count);
+    ReadAsync(rb[1], Count, AsyncPtr);
     l := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), nil, 0);
     SetLength(Str, l);
     Result := MultiByteToWideChar(FCodePage, 0, PAnsiChar(rb), Length(rb), PWideChar(Str), l);
@@ -3091,6 +3097,16 @@ begin
   if Value <> FDiscardNull then
   begin
     FDiscardNull := Value;
+    ApplyDCB;
+  end;
+end;
+
+// set eof characters
+procedure TCustomComPort.SetEofChar(const Value: Char);
+begin
+  if Value <> FEofChar then
+  begin
+    FEofChar := Value;
     ApplyDCB;
   end;
 end;
