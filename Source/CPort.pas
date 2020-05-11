@@ -20,7 +20,7 @@ unit CPort;
 interface
 
 uses
-  Windows, Messages, Classes, SysUtils, IniFiles, Registry;
+  Windows, Messages, Classes, SysUtils, IniFiles, Registry, Types;
 
 type
   TComExceptions = (
