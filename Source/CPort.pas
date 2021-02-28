@@ -30,7 +30,7 @@ type
     CE_EscapeComFailed, CE_TransmitFailed, CE_ConnChangeProp,
     CE_EnumPortsFailed, CE_StoreFailed, CE_LoadFailed, CE_RegFailed,
     CE_LedStateFailed, CE_ThreadCreated, CE_WaitFailed, CE_HasLink,
-    CE_RegError, CEPortNotOpen
+    CE_RegError, CEPortNotOpen, CE_PortDisconnected
   );
 
   // various types
@@ -632,30 +632,31 @@ const
   WaitInfinite = Integer(INFINITE);
 
   // error codes
-  CError_OpenFailed      = 1;
-  CError_WriteFailed     = 2;
-  CError_ReadFailed      = 3;
-  CError_InvalidAsync    = 4;
-  CError_PurgeFailed     = 5;
-  CError_AsyncCheck      = 6;
-  CError_SetStateFailed  = 7;
-  CError_TimeoutsFailed  = 8;
-  CError_SetupComFailed  = 9;
-  CError_ClearComFailed  = 10;
-  CError_ModemStatFailed = 11;
-  CError_EscapeComFailed = 12;
-  CError_TransmitFailed  = 13;
-  CError_ConnChangeProp  = 14;
-  CError_EnumPortsFailed = 15;
-  CError_StoreFailed     = 16;
-  CError_LoadFailed      = 17;
-  CError_RegFailed       = 18;
-  CError_LedStateFailed  = 19;
-  CError_ThreadCreated   = 20;
-  CError_WaitFailed      = 21;
-  CError_HasLink         = 22;
-  CError_RegError        = 23;
-  CError_PortNotOpen     = 24;
+  CError_OpenFailed       = 1;
+  CError_WriteFailed      = 2;
+  CError_ReadFailed       = 3;
+  CError_InvalidAsync     = 4;
+  CError_PurgeFailed      = 5;
+  CError_AsyncCheck       = 6;
+  CError_SetStateFailed   = 7;
+  CError_TimeoutsFailed   = 8;
+  CError_SetupComFailed   = 9;
+  CError_ClearComFailed   = 10;
+  CError_ModemStatFailed  = 11;
+  CError_EscapeComFailed  = 12;
+  CError_TransmitFailed   = 13;
+  CError_ConnChangeProp   = 14;
+  CError_EnumPortsFailed  = 15;
+  CError_StoreFailed      = 16;
+  CError_LoadFailed       = 17;
+  CError_RegFailed        = 18;
+  CError_LedStateFailed   = 19;
+  CError_ThreadCreated    = 20;
+  CError_WaitFailed       = 21;
+  CError_HasLink          = 22;
+  CError_RegError         = 23;
+  CError_PortNotOpen      = 24;
+  CError_PortDisconnected = 25;
 
 implementation
 
@@ -664,7 +665,7 @@ uses
 
 var
   // error messages
-  ComErrorMessages: array[1..24] of WideString;
+  ComErrorMessages: array[1..25] of WideString;
 
 const
   // auxilary constants used not defined in windows.pas
@@ -1535,10 +1536,13 @@ begin
   // if already closed, do nothing
   if FConnected and not (csDesigning in ComponentState) then
   begin
-    CallBeforeClose;
+    if GetLastError <> ERROR_ACCESS_DENIED then
+    begin
+      CallBeforeClose;
 
-    // abort all pending operations
-    AbortAllAsync;
+      // abort all pending operations
+      AbortAllAsync;
+    end;
 
     // stop monitoring for events
     if FThreadCreated then
@@ -1895,9 +1899,18 @@ begin
   Success := WriteFile(FHandle, Buffer, Count, BytesTrans, @(AsyncPtr^.Overlapped))
     or (GetLastError = ERROR_IO_PENDING);
 
+
   if not Success then
-    //raise EComPort.Create
-    CallException(CError_WriteFailed, GetLastError);
+    if GetLastError = ERROR_ACCESS_DENIED then
+    begin
+      // USB cable disconnected
+      Close;
+      CallException(CError_PortDisconnected);
+      Result := 0;
+      Exit;
+    end else
+      //raise EComPort.Create
+      CallException(CError_WriteFailed, GetLastError);
 
   SendSignalToLink(leTx, True);
   Result := BytesTrans;
@@ -2026,8 +2039,16 @@ begin
     or (GetLastError = ERROR_IO_PENDING);
 
   if not Success then
-    //raise EComPort.Create
-    CallException(CError_ReadFailed, GetLastError);
+    if GetLastError = ERROR_ACCESS_DENIED then
+    begin
+      // USB cable disconnected
+      Close;
+      CallException(CError_PortDisconnected);
+      Result := 0;
+      Exit;
+    end else
+      //raise EComPort.Create
+      CallException(CError_ReadFailed, GetLastError);
 
   Result := BytesTrans;
 end;
@@ -2111,6 +2132,12 @@ var
   BytesTrans, Signaled: DWORD;
   Success: Boolean;
 begin
+  if not FConnected then
+  begin
+    Result := 0;
+    Exit;
+  end;
+
   if AsyncPtr = nil then
     //raise EComPort.CreateNoWinCode
     CallException(CError_InvalidAsync);
@@ -2120,8 +2147,16 @@ begin
       (GetOverlappedResult(FHandle, AsyncPtr^.Overlapped, BytesTrans, False));
 
   if not Success then
-    //raise EComPort.Create
-    CallException(ErrorCode(AsyncPtr), GetLastError);
+    if GetLastError = ERROR_GEN_FAILURE then
+    begin
+      // USB cable disconnected
+      Close;
+      CallException(CError_PortDisconnected);
+      Result := 0;
+      Exit;
+    end else
+      //raise EComPort.Create
+      CallException(ErrorCode(AsyncPtr), GetLastError);
 
   if (AsyncPtr^.Kind = okRead) and (InputCount = 0) then
     SendSignalToLink(leRx, False)
@@ -2136,8 +2171,9 @@ end;
 procedure TCustomComPort.AbortAllAsync;
 begin
   if not PurgeComm(FHandle, PURGE_TXABORT or PURGE_RXABORT) then
-    //raise EComPort.Create
-    CallException(CError_PurgeFailed, GetLastError);
+    if GetLastError <> ERROR_ACCESS_DENIED then
+      //raise EComPort.Create
+      CallException(CError_PurgeFailed, GetLastError);
 end;
 
 // detect whether asynchronous operation is completed
@@ -3830,5 +3866,6 @@ initialization
   ComErrorMessages[22] := 'A component is linked to OnRxBuf event';
   ComErrorMessages[23] := 'Registry error';
   ComErrorMessages[24] := 'Port Not Open';//  CError_PortNotOpen
+  ComErrorMessages[25] := 'Port Disconnected';//  USB cable disconnected
 
 end.

@@ -1,5 +1,8 @@
 # ComPort Library
 
+ComPort library with USB COM port disconnected issue fixed. Solution isn't perfect and still is possible to suspend application on infinite WaitForSingleObject, especially in the case of very slow transmission speeds (300-600 bauds), but it's a lot better than before.
+When USB COM port disconnected error occures, handler OnAfterClose is executed and exception "Port Disconnected" (TComException = CE_PortDisconnected) is generated.
+
 The ComPort Library contains code to access COM Ports. Originally, the COM port was the name of the serial port interface of IBM-PC compatible computers.
 While nowadays COM ports get less important for communication in favor for USB access, it is still in use as virtual ports, especially as simple communication protocol for maker boards.
 
