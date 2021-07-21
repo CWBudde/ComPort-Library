@@ -661,7 +661,7 @@ const
 implementation
 
 uses
-  {$IFNDEF No_Dialogs} CPortSetup, {$ENDIF} Controls, Forms, Types, WinSpool;
+  {$IFNDEF No_Dialogs} CPortSetup, {$ENDIF} Controls, Forms, WinSpool;
 
 var
   // error messages
